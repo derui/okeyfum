@@ -1,0 +1,38 @@
+# Provide some useful functions to make cross platform programs.
+open build/C
+open configure/Configure
+
+# This section is executed by omake first running.
+# Type of the platform under executing OMake, but PLATFORM_TYPE differ from OSTYPE.
+# PLATFORM_TYPE is setted by one of value as follows;
+# Unix, Mac, Win32, Cygwin
+global.PLATFORM_TYPE =
+	switch $(OSTYPE)
+	case Unix
+		value $(RunCProg $"""
+#include <stdio.h>
+
+int main(int argc, char** argv) {
+#if defined(__APPLE__)
+	printf("Mac");
+#else
+	printf("Unix");
+#endif
+	return 0;
+}
+""")
+	default
+		value $(OSTYPE)
+
+# helper functions for checking current platform.
+IsMac() =
+	return $(equal $(PLATFORM_TYPE), Mac)
+
+IsUnix() =
+	return $(equal $(PLATFORM_TYPE), Unix)
+
+IsWin() =
+	return $(equal $(PLATFORM_TYPE), Win32)
+
+IsCygwin() =
+	return $(equal $(PLATFORM_TYPE), Cygwin)

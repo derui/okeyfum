@@ -1,0 +1,39 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Compiled OCaml objects
+*.cmo
+*.cmi
+*.cmx
+*.cmxa
+*.cma
+*.annot
+*.cmt
+*.cmti
+
+# compiled omake files
+*.omc
+.omakedb
+.omakedb.lock
+
+# executable
+*.opt
+*.run
+
+# generated documents
+*.html
+*.dot
+*.css
+
+# installed information
+installed/
