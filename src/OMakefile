@@ -1,12 +1,6 @@
-########################################################################
-# The standard OMakefile.
-# You will usually need to modify this file for your project.
 open MyFunction
 open MyOCaml
 
-########################################################################
-# Phony targets are scoped, so you probably want to declare them first.
-#
 .PHONY: clean all
 
 #
@@ -26,13 +20,8 @@ if $(not $(OCAMLFIND_EXISTS))
 #
 OCAMLINCLUDES += 
 
-#
-# Compile native or byte code?
-#
-# The default values are defined as follows:
-#
 NATIVE_ENABLED = $(OCAMLOPT_EXISTS)
-BYTE_ENABLED = $(not $(OCAMLOPT_EXISTS))
+BYTE_ENABLED = true
 
 #
 # Various options
@@ -52,19 +41,13 @@ OCAMLOPTFLAGS +=
 #
 # OCamlGeneratedFiles(parser.ml lexer.ml)
 
-################################################
-# Build an OCaml program
-#
-
 # OCAML_LIBS +=
 # OCAML_CLIBS +=
 # OCAML_OTHER_LIBS += nums
 # OCAML_LIB_FLAGS +=
 #
+files[] = 
 
 .DEFAULT: all
 
-all: OCamlProgram(../bin/$(program), $(removesuffix .ml, $(ls *.ml)))
-
-install:
-	CreateInstalled($(LIB), $(glob i, src/*ml) $(glob i, src/*c))
+all: OCamlProgram(../bin/$(program), $(files))
