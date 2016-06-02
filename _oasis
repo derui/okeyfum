@@ -1,0 +1,14 @@
+OASISFormat: 0.2
+Name:        okeyfum
+Version:     0.1.0
+Synopsis:    Linux key configuration tool by OCaml
+Authors:     derui
+License:     LGPL-2.0 with OCaml linking exception
+Plugins:     StdFiles (0.2)
+BuildType:   Custom (0.2)
+InstallType: Custom (0.2)
+XCustomBuild:      sh -c "omake PREFIX=$prefix"
+XCustomInstall:    sh -c "omake PREFIX=$prefix install"
+XCustomUninstall:  sh -c "omake PREFIX=$prefix uninstall"
+XCustomBuildClean: sh -c "omake PREFIX=$prefix clean"
+BuildTools: omake

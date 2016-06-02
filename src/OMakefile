@@ -9,6 +9,8 @@ open MyOCaml
 USE_OCAMLFIND = true
 #
 OCAMLPACKS[] =
+	ctypes
+	ctypes-foreign
 #
 if $(not $(OCAMLFIND_EXISTS))
     eprintln(This project requires ocamlfind, but is was not found.)
@@ -46,7 +48,8 @@ OCAMLOPTFLAGS +=
 # OCAML_OTHER_LIBS += nums
 # OCAML_LIB_FLAGS +=
 #
-files[] = 
+files[] =
+	main
 
 .DEFAULT: all
 
