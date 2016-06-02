@@ -10,7 +10,7 @@ USE_OCAMLFIND = true
 #
 OCAMLPACKS[] =
 	ctypes
-	ctypes-foreign
+	ctypes.foreign
 #
 if $(not $(OCAMLFIND_EXISTS))
     eprintln(This project requires ocamlfind, but is was not found.)
@@ -48,9 +48,21 @@ OCAMLOPTFLAGS +=
 # OCAML_OTHER_LIBS += nums
 # OCAML_LIB_FLAGS +=
 #
+program = okeyfum
 files[] =
+	types
 	main
 
 .DEFAULT: all
 
-all: OCamlProgram(../bin/$(program), $(files))
+OCamlProgram($(program), $(files))
+all: $(program)$(EXE)
+
+install:
+	install $(PREFIX)/$(program)$(EXE) $(program)$(EXE)
+	install $(PREFIX)/$(program).opt $(program).opt
+
+uninstall:
+	rm -rf $(PREFIX)/$(program)$(EXE)
+	rm -rf $(PREFIX)/$(program)$(EXE)
+
