@@ -1,7 +1,6 @@
-open MyFunction
-open MyOCaml
+open build/C
 
-.PHONY: stub clean all
+.PHONY: clean stub
 
 #
 # This project requires ocamlfind (default - false).
@@ -11,6 +10,7 @@ USE_OCAMLFIND = true
 OCAMLPACKS[] =
 	ctypes
 	ctypes.foreign
+	ctypes.stubs
 #
 if $(not $(OCAMLFIND_EXISTS))
     eprintln(This project requires ocamlfind, but is was not found.)
@@ -20,7 +20,7 @@ if $(not $(OCAMLFIND_EXISTS))
 #
 # Include path
 #
-OCAMLINCLUDES += 
+OCAMLINCLUDES += ../src
 
 NATIVE_ENABLED = $(OCAMLOPT_EXISTS)
 BYTE_ENABLED = true
@@ -28,7 +28,7 @@ BYTE_ENABLED = true
 #
 # Various options
 #
-OCAMLFLAGS    += 
+OCAMLFLAGS    +=
 OCAMLCFLAGS   +=
 OCAMLOPTFLAGS += -warn-error -58
 # OCAML_LINK_FLAGS +=
@@ -48,23 +48,20 @@ OCAMLOPTFLAGS += -warn-error -58
 # OCAML_OTHER_LIBS += nums
 # OCAML_LIB_FLAGS +=
 #
-program = okeyfum
-files[] =
-	ffi_bindings
-	ffi_generated_types
-	types
-	main
+.DEFAULT: stub
 
-.DEFAULT: all
+INCLUDES += $(shell ocamlfind query ctypes.stubs) $(shell ocamlfind query stdlib)
 
-OCamlProgram($(program), $(files))
-all: stub $(program)$(EXE)
+OCamlProgram(gen-type-stub, generate_types ../src/ffi_bindings)
+CProgram(ffi_ml_types_stubgen, ffi_ml_types_stubgen)
+ffi_ml_types_stubgen.c: gen-type-stub$(EXE)
+	./gen-type-stub$(EXE) > $@
 
-install:
-	install $(PREFIX)/$(program)$(EXE) $(program)$(EXE)
-	install $(PREFIX)/$(program).opt $(program).opt
+../src/ffi_generated_types.ml: ffi_ml_types_stubgen$(EXE)
+	./ffi_ml_types_stubgen$(EXE) > $@
 
-uninstall:
-	rm -rf $(PREFIX)/$(program)$(EXE)
-	rm -rf $(PREFIX)/$(program)$(EXE)
+stub: ../src/ffi_generated_types.ml
 
+clean:
+	rm -f ffi_ml_type_stubgen.*
+	rm -f ../src/ffi_generated_types.ml

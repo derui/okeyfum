@@ -1,5 +1,7 @@
 open Ctypes
 
+module T = Ffi_bindings.Types(Ffi_generated_types)
+
 (* Posix timeval integration *)
 module Timeval = struct
   type t = {
@@ -28,6 +30,7 @@ end
 
 (* The module for linux's input_event struct *)
 module Input_event = struct
+
   type t = {
     time: Timeval.t;
     typ: int;
