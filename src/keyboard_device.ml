@@ -89,6 +89,7 @@ let create_user_dev fd =
                 |> ignore
   ) [T.Event_type.ev_key; T.Event_type.ev_rep];
 
+  (* initialize keycodes raise from created device *)
   let keys = Array.make 256 0 in
   Array.iteri (fun ind _ ->
     Inner.ioctl fd Signed.Int64.(of_int UI.ui_set_keybit) (Util.int_to_voidp ind) |> ignore
@@ -114,9 +115,17 @@ let close_key_dev fd =
   Inner.dev_close fd |> ignore;
   Log.debug "Closing keyboard device finished!"
 
+(* signal handler  *)
+let handler user keyboard =
+  if user <> -1 then close_user_dev user else ();
+  if keyboard <> -1 then close_key_dev keyboard else ()
+
 let open_with ~dev ~f =
   let fd : keyboard fd ref = ref (-1)
   and ufd : user fd ref = ref (-1) in
+
+  Sys.set_signal Sys.sigint (Sys.Signal_handle (fun _ -> handler !ufd !fd));
+  Sys.set_signal Sys.sigkill (Sys.Signal_handle (fun _ -> handler !ufd !fd));
 
   try
     Util.protect ~f:(fun () ->
