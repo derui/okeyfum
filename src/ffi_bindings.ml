@@ -35,6 +35,10 @@ module Types (F: Cstubs.Types.TYPE) = struct
     let bus_virtual = F.constant "BUS_VIRTUAL" F.int
   end
 
+  module Input_syn = struct
+    let report = F.constant "SYN_REPORT" F.int
+  end
+
   module Input_ioctl = struct
     let grab = F.constant "EVIOCGRAB" F.int
   end
@@ -42,6 +46,7 @@ module Types (F: Cstubs.Types.TYPE) = struct
   (* The flags for Linux Open *)
   module Open_flag = struct
     let rdonly = F.constant "O_RDONLY" F.int
+    let rdwr = F.constant "O_RDWR" F.int
     let wronly = F.constant "O_WRONLY" F.int
   end
 end

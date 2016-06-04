@@ -1,7 +1,12 @@
 let usage = "usage: okeyfum [options] <device>"
 
 let loop ~user ~keyboard =
-  let rec loop' () = () in
+  let rec loop' () =
+    let key = Keyboard_device.read_key keyboard in
+    Keyboard_device.write_key user key;
+
+    loop' ()
+  in
 
   loop' ()
 
