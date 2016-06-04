@@ -39,3 +39,7 @@
 installed/
 
 src/ffi_generated_types.*
+/stub/gen-type-stub
+/src/okeyfum
+/stub/ffi_ml_types_stubgen
+/stub/ffi_ml_types_stubgen.c

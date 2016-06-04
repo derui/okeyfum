@@ -1,13 +1,13 @@
-(* This module provides functions for keyboard device file and manage
-   uinput device.
-*)
 open Ctypes
 open Foreign
 
 (* Paths of uinput device. *)
 let uinput_paths = ["/dev/uinput"; "/dev/input/uinput"]
 
-type fd = int
+type 'a fd = int
+  
+type user
+type keyboard
 
 module T = Ffi_bindings.Types(Ffi_generated_types)
 
@@ -102,20 +102,45 @@ let close_key_dev fd =
   Inner.dev_close fd |> ignore
 
 let open_with ~dev ~f =
-  
-  Log.debug ("Grabbing device : " ^ dev);
-  let fd = open_key_dev dev in
-  Log.debug ("Grabbing device is success!: " ^ dev);
+  let fd : keyboard fd ref = ref (-1)
+  and ufd : user fd ref = ref (-1) in
 
-  Log.debug ("Creating user device : " ^ dev);
-  let ufd = open_user_dev () in
-  create_user_dev ufd;
-  Log.debug ("Creating user device is success!: " ^ dev);
-  try f fd with
+  try
+    Util.protect ~f:(fun () ->
+      Log.debug ("Grabbing device : " ^ dev);
+      fd := open_key_dev dev;
+      Log.debug ("Grabbing device is success!: " ^ dev);
+
+      Util.protect ~f:(fun () ->
+        Log.debug ("Creating user device : " ^ dev);
+        ufd := open_user_dev ();
+        create_user_dev !ufd;
+        Log.debug ("Creating user device is success!: " ^ dev);
+
+        f ~user:!ufd ~keyboard:!fd
+      ) ~finally:(fun () -> close_user_dev !ufd)
+        
+    ) ~finally:(fun () -> close_key_dev !fd)
+  with 
   | Unix.Unix_error (e, fname, param) -> begin
-     let e = Unix.error_message e in
-     Log.error (Printf.sprintf "Unix error occured! => %s [%s(%s)]" e fname param)
-  end;
+    let e = Unix.error_message e in
+    Log.error (Printf.sprintf "Unix error occured! => %s [%s(%s)]" e fname param)
+  end
 
-    close_key_dev fd;
-    close_user_dev ufd
+
+let read_key fd =
+  let module U = Types.Input_event in
+  let module UI = T.Uinput in
+  let output = U.empty in
+  
+  let data = U.(of_ocaml output) in
+  let refs = addr data |> to_voidp in
+  Inner.dev_read fd refs (sizeof U.t |> Unsigned.Size_t.of_int) |> ignore;
+  U.to_ocaml data
+
+let write_key fd data =
+  let module U = Types.Input_event in
+  let module UI = T.Uinput in
+
+  let data = U.(of_ocaml data) |> addr |> to_voidp in
+  Inner.dev_write fd data (sizeof U.t |> Unsigned.Size_t.of_int) |> ignore;

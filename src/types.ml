@@ -25,6 +25,8 @@ module Timeval = struct
     setf ret tv_usec Signed.Int64.(of_int64 o.tv_usec);
     ret
 
+  let empty = {tv_sec = PosixTypes.Time.zero; tv_usec = 0L}
+
   let () = seal t
 end
 
@@ -67,6 +69,13 @@ module Input_event = struct
     code |< Unsigned.UInt16.(of_int o.code);
     value |< Signed.Int32.(of_int64 o.value);
     ret
+
+  let empty = {
+    time = Timeval.empty;
+    typ = 0;
+    code = 0;
+    value = 0L;
+  }
 
   let () = seal t
 end
