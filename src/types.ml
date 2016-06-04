@@ -28,6 +28,13 @@ module Timeval = struct
   let () = seal t
 end
 
+module Timezone = struct
+  type _t
+  let _t : _t structure typ = structure "timezone"
+  type t = _t structure ptr
+  let t = ptr _t
+end
+
 (* The module for linux's input_event struct *)
 module Input_event = struct
 
@@ -63,3 +70,83 @@ module Input_event = struct
 
   let () = seal t
 end
+
+module Input_id = struct
+  type t = {
+    bustype: int;
+    vendor: int;
+    product: int;
+    version: int;
+  }
+
+  let t : t structure typ = structure "input_id"
+
+  let bustype = field t "bustype" uint16_t
+  let vendor = field t "vendor" uint16_t
+  let product = field t "product" uint16_t
+  let version = field t "version" uint16_t
+
+  let to_ocaml t = {
+    bustype = Unsigned.UInt16.(getf t bustype |> to_int);
+    vendor = Unsigned.UInt16.(getf t vendor |> to_int);
+    product = Unsigned.UInt16.(getf t product |> to_int);
+    version = Unsigned.UInt16.(getf t version |> to_int);
+  }
+
+  let of_ocaml o =
+    let t = make t in
+    setf t bustype Unsigned.UInt16.(of_int o.bustype);
+    setf t vendor Unsigned.UInt16.(of_int o.vendor);
+    setf t product Unsigned.UInt16.(of_int o.product);
+    setf t version Unsigned.UInt16.(of_int o.version);
+    t
+
+  let () = seal t
+end
+
+module Uinput_user_dev = struct
+  type t = {
+    name: string;
+    id: Input_id.t;
+    ff_effects_max: int;
+    absmax: int32 list;
+    absmin: int32 list;
+    absfuzz: int32 list;
+    absflat: int32 list;
+  }
+
+  let t : t structure typ = structure "uinput_user_dev"
+
+  let name = field t "name" (array T.Uinput.max_name_size char)
+  let id = field t "id" Input_id.t
+  let ff_effects_max = field t "ff_effects_max" int32_t
+  let absmax = field t "absmax" (array T.Input_abs.abs_cnt int32_t)
+  let absmin = field t "absmin" (array T.Input_abs.abs_cnt int32_t)
+  let absfuzz = field t "absfuzz" (array T.Input_abs.abs_cnt int32_t)
+  let absflat = field t "absflat" (array T.Input_abs.abs_cnt int32_t)
+
+  let to_ocaml t = {
+    name = getf t name |> CArray.start |> string_from_ptr ~length:T.Uinput.max_name_size;
+    id = getf t id |> Input_id.to_ocaml;
+    ff_effects_max = getf t ff_effects_max |> Signed.Int32.to_int;
+    absmax = getf t absmax |> CArray.to_list;
+    absmin = getf t absmin |> CArray.to_list;
+    absfuzz = getf t absfuzz |> CArray.to_list;
+    absflat = getf t absflat |> CArray.to_list;
+  }
+
+  let of_ocaml o =
+    let t = make t in
+    let name' = CArray.make char ~initial:(Char.chr 0) T.Uinput.max_name_size in
+    String.iteri (fun ind c -> CArray.set name' ind c) o.name;
+    setf t name name';
+    setf t id (Input_id.of_ocaml o.id);
+    setf t ff_effects_max Signed.Int32.(of_int o.ff_effects_max);
+    setf t absmax CArray.(of_list int32_t o.absmax);
+    setf t absmin CArray.(of_list int32_t o.absmin);
+    setf t absfuzz CArray.(of_list int32_t o.absfuzz);
+    setf t absflat CArray.(of_list int32_t o.absflat);
+    t
+
+  let () = seal t
+end 

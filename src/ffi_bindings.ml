@@ -18,4 +18,30 @@ module Types (F: Cstubs.Types.TYPE) = struct
     let ev_max = F.constant "EV_MAX" F.int
     let ev_cnt = F.constant "EV_CNT" F.int
   end
+
+  module Uinput = struct
+    let max_name_size = F.constant "UINPUT_MAX_NAME_SIZE" F.int
+    let ui_set_evbit = F.constant "UI_SET_EVBIT" F.int
+    let ui_set_keybit = F.constant "UI_SET_KEYBIT" F.int
+    let ui_dev_create = F.constant "UI_DEV_CREATE" F.int
+    let ui_dev_destroy = F.constant "UI_DEV_DESTROY" F.int
+  end
+
+  module Input_abs = struct
+    let abs_cnt = F.constant "ABS_CNT" F.int
+  end
+
+  module Input_bus = struct
+    let bus_virtual = F.constant "BUS_VIRTUAL" F.int
+  end
+
+  module Input_ioctl = struct
+    let grab = F.constant "EVIOCGRAB" F.int
+  end
+
+  (* The flags for Linux Open *)
+  module Open_flag = struct
+    let rdonly = F.constant "O_RDONLY" F.int
+    let wronly = F.constant "O_WRONLY" F.int
+  end
 end

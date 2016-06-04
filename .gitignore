@@ -37,3 +37,5 @@
 
 # installed information
 installed/
+
+src/ffi_generated_types.*

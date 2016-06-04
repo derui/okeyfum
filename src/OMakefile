@@ -52,7 +52,11 @@ program = okeyfum
 files[] =
 	ffi_bindings
 	ffi_generated_types
+	log
+	util
 	types
+	time
+	keyboard_device
 	main
 
 .DEFAULT: all
