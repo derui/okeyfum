@@ -7,7 +7,7 @@
 
 (* keyword *)
 %token KEYWORD_DEFLOCK
-%token KEYWORD_LOCK KEYWORD_DEFVAR KEYWORD_KEY
+%token KEYWORD_LOCK KEYWORD_DEFVAR KEYWORD_KEY KEYWORD_UP KEYWORD_DOWN
 
 (* %token <string> WHITE_SPACE *)
 (* %token <string> LINE_TERMINATOR *)
@@ -41,7 +41,12 @@ EOF {None}
   ;
 
   key_statement:
-    KEYWORD_KEY identifier EQ key_sequences { Config_type.Cstm_key ($2, $4)}
+    KEYWORD_KEY identifier key_state EQ key_sequences { Config_type.Cstm_key ($2, $3, $5)}
+  ;
+
+  key_state:
+    KEYWORD_UP {`UP}
+   |KEYWORD_DOWN {`DOWN}
   ;
 
   deflock_statement:
