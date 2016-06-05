@@ -48,8 +48,12 @@ OCAMLOPTFLAGS += -warn-error -58
 # OCAML_OTHER_LIBS += nums
 # OCAML_LIB_FLAGS +=
 #
+LocalOCamlGeneratedFiles(config_parser.ml config_lexer.ml)
+
 program = okeyfum
 files[] =
+	config_lexer
+	config_parser
 	ffi_bindings
 	ffi_generated_types
 	log

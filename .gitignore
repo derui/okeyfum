@@ -43,3 +43,6 @@ src/ffi_generated_types.*
 /src/okeyfum
 /stub/ffi_ml_types_stubgen
 /stub/ffi_ml_types_stubgen.c
+/src/config_lexer.ml
+/src/config_parser.ml
+/src/config_parser.mli
