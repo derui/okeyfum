@@ -26,34 +26,58 @@ module Config = struct
         | _ -> 0
   end)
 
+  module Lockdef_map = Map.Make(struct
+    type t = string
+    let compare = Pervasives.compare
+  end)
+
   type key = [`Var of string | `Id of string]
 
   type keydef_map = key list Keydef_map.t
   type lock_decl = string * keydef_map
+  type lock_def = string
 
   type t = {
     key_map: (string, int) Hashtbl.t;
     variable_map: (string, key list) Hashtbl.t;
     lock_decls: lock_decl list;
+    lockdef_map: string Lockdef_map.t;
     keydef_map: key list Keydef_map.t; (* key-definition map *)
   }
 
+  (* expression to key definition *)
   let exp_to_key = function
     | Config_type.Cexp_ident id -> `Id id
     | Config_type.Cexp_var v -> `Var v
 
+  (* convert statement to key sequence *)
   let stmt_to_sequence map = function
     | Config_type.Cstm_key (Config_type.Cexp_ident key, state, seqs) ->
        Keydef_map.add (key, state) (List.map exp_to_key seqs) map
     | _ -> failwith "Only key definition to be able to convert sequence"
 
+  (* convert statement to lock declaration *)
   let stmt_to_decl = function
     | Config_type.Cstm_lock (Config_type.Cexp_ident lock_name, seqs) ->
        let m = Keydef_map.empty in
        (lock_name, List.fold_left stmt_to_sequence m  seqs)
     | _ -> failwith "Lock declaration only"
 
-  let rec apply_statement config stmts =
+  (* convert statement to lock key definition *)
+  let stmt_to_lockdef m = function
+    | Config_type.Cstm_deflock (Config_type.Cexp_ident lock_name, Confid_type.Cexp_ident key) ->
+       Lockdef_map.add lock_name key m
+    | _ -> failwith "Lock key definition only"
+
+  (* convert statement to variable *)
+  let stmt_to_variable m = function
+    | Config_type.Cstm_defvar (Config_type.Cexp_var name, seqs) ->
+       Hashtbl.add m name (List.map exp_to_key seqs);
+       m
+    | _ -> failwith "Variable definition only"
+
+  (* build config from parsed configurations *)
+  let rec build_statement config stmts =
     match stmts with
     | [] -> config
     | stmt :: rest -> begin
@@ -63,14 +87,21 @@ module Config = struct
       } rest
       | Config_type.Cstm_key _ ->
          let keydef_map' = stmt_to_sequence config.keydef_map stmt in
-         apply_statement {config with keydef_map = keydef_map'} rest
+         build_statement {config with keydef_map = keydef_map'} rest
+      | Config_type.Cstm_deflock _ ->
+         let lockdef_map' = stmt_to_lockdef config.lockdef_map stmt in
+         build_statement {config with lockdef_map = lockdef_map'} rest
+      | Config_type.Cstm_defvar _ ->
+         let variable_map' = stmt_to_variable config.variable_map stmt in
+         build_statement {config with variable_map = variable_map'} rest
     end
 
   let make = function
-    | Config_type.Cprog_main stmts -> apply_statement {
+    | Config_type.Cprog_main stmts -> build_statement {
       key_map = Hashtbl.create 100;
       variable_map = Hashtbl.create 100;
       lock_decls = [];
+      lockdef_map = Lockdef_map.empty;
       keydef_map = Keydef_map.empty;
     } stmts
 

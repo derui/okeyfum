@@ -5,7 +5,7 @@ open Foreign
 let uinput_paths = ["/dev/uinput"; "/dev/input/uinput"]
 
 type 'a fd = int
-  
+
 type user
 type keyboard
 
@@ -20,7 +20,7 @@ module Inner = struct
 end
 
 (* Inner utility function to initialize all key state as released. *)
-let release_all_keys fd = 
+let release_all_keys fd =
   let module U = Types.Input_event in
   let module UI = T.Uinput in
   let input = {
@@ -67,7 +67,7 @@ let close_user_dev fd =
 let create_user_dev fd =
   Log.debug "Creating user device...";
   let module U = Types.Uinput_user_dev in
-  let module UI = T.Uinput in 
+  let module UI = T.Uinput in
   let udev = {
     U.name = "okeyfum";
     id = {
@@ -98,7 +98,7 @@ let create_user_dev fd =
   Log.debug "Creating user device finished"
 
 (* Open keyboard device *)
-let open_key_dev dev = 
+let open_key_dev dev =
   let fd = Inner.dev_open dev T.Open_flag.rdwr in
   if fd < 0 then failwith "Not found specified keyboard device"
   else begin
@@ -125,7 +125,6 @@ let open_with ~dev ~f =
   and ufd : user fd ref = ref (-1) in
 
   Sys.set_signal Sys.sigint (Sys.Signal_handle (fun _ -> handler !ufd !fd));
-  Sys.set_signal Sys.sigkill (Sys.Signal_handle (fun _ -> handler !ufd !fd));
 
   try
     Util.protect ~f:(fun () ->
@@ -139,9 +138,9 @@ let open_with ~dev ~f =
 
         f ~user:!ufd ~keyboard:!fd
       ) ~finally:(fun () -> close_user_dev !ufd)
-        
+
     ) ~finally:(fun () -> close_key_dev !fd)
-  with 
+  with
   | Unix.Unix_error (e, fname, param) -> begin
     let e = Unix.error_message e in
     Log.error (Printf.sprintf "Unix error occured! => %s [%s(%s)]" e fname param)
