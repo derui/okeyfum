@@ -1,9 +1,9 @@
 %{
-  exception SyntaxError of string
+ exception SyntaxError of string
 %}
 
 (* punctuators *)
-%token LCBRACE RCBRACE EQ COMMA
+%token LCBRACE RCBRACE EQ COMMA LPAREN RPAREN AND
 
 (* keyword *)
 %token KEYWORD_DEFLOCK
@@ -50,9 +50,9 @@ EOF {None}
   ;
 
   deflock_statement:
-    KEYWORD_DEFLOCK ident=identifier EQ seq=key_sequence {
+    KEYWORD_DEFLOCK ident=identifier {
       match ident with
-      | Config_type.Cexp_ident _ -> Config_type.Cstm_deflock(ident, seq)
+      | Config_type.Cexp_ident _ -> Config_type.Cstm_deflock(ident)
       | _ -> failwith "deflock only apply identifier"
     }
   ;
@@ -72,7 +72,10 @@ EOF {None}
 
   key_sequence:
     variable {$1}
-   |identifier {$1}
+                          |identifier {$1}
+                          |AND IDENT LPAREN separated_nonempty_list(COMMA, IDENT) RPAREN {
+                            Config_type.Cexp_funcall ($2, $4)
+                          }
   ;
 
   identifier:

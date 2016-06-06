@@ -54,6 +54,7 @@ program = okeyfum
 files[] =
 	config_lexer
 	config_parser
+	config
 	ffi_bindings
 	ffi_generated_types
 	log

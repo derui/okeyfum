@@ -29,8 +29,11 @@ rule token = parse
   | "#" { single_line_comment (Buffer.create 1) lexbuf}
   | '{' { LCBRACE }
   | '}' { RCBRACE }
+  | '(' { LPAREN }
+  | ')' { RPAREN }
   | '=' { EQ }
   | ',' { COMMA }
+  | '&' { AND }
   | identifier_start (identifier_start | ['0'-'9'])+ as ident {IDENT(ident)}
   | line_terminator {next_line lexbuf; token lexbuf}
   | reserved_word { to_keyword (Lexing.lexeme lexbuf)}
