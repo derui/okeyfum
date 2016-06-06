@@ -2,7 +2,7 @@ if $(file-exists OMakeroot)
    include MyOCaml
    export
 
-.SUBDIRS: src stub
+.SUBDIRS: src stub test
 
 # mark file confined directory path.
 INSTALLED = $(BIG_ROOT)/installed
