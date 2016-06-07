@@ -2,6 +2,8 @@
 key up sample = v, b
 key down sample = v, b
 
+key up d = $a, &fun(b)
+
 deflock b
 
 defvar $var_name = a,b,c,d
