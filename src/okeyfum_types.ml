@@ -1,6 +1,6 @@
 open Ctypes
 
-module T = Ffi_bindings.Types(Ffi_generated_types)
+module T = Okeyfum_ffi_bindings.Types(Okeyfum_ffi_generated_types)
 
 (* Posix timeval integration *)
 module Timeval = struct

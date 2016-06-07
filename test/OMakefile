@@ -29,7 +29,7 @@ BYTE_ENABLED = true
 #
 # Various options
 #
-OCAMLFLAGS    += 
+OCAMLFLAGS    += -g
 OCAMLCFLAGS   +=
 OCAMLOPTFLAGS += -warn-error -58
 # OCAML_LINK_FLAGS +=
@@ -54,8 +54,9 @@ files[] =
 	config_test
 
 foreach(x => ..., $(files))
-	OCamlProgram($(x), $(x))
+	OCamlProgram($(x), $(x) $(removesuffix .ml, $(ls ../src/okeyfum*.ml)) )
 	export
+
 test: $(addsuffix $(EXE), $(files))
 
 exec: test

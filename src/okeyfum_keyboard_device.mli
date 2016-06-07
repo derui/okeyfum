@@ -2,7 +2,8 @@
   This module provides functions for keyboard device file and manage
   uinput device.
 *)
-
+module Types = Okeyfum_types
+  
 type 'a fd
 (* The type of file descriptor. This type do not have compatibility Unix.fd *)
 

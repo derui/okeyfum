@@ -52,16 +52,17 @@ LocalOCamlGeneratedFiles(config_parser.ml config_lexer.ml)
 
 program = okeyfum
 files[] =
-	config_lexer
-	config_parser
-	config
-	ffi_bindings
-	ffi_generated_types
-	log
-	util
-	types
-	time
-	keyboard_device
+	okeyfum_config_type
+	okeyfum_config_lexer
+	okeyfum_config_parser
+	okeyfum_config
+	okeyfum_ffi_bindings
+	okeyfum_ffi_generated_types
+	okeyfum_log
+	okeyfum_util
+	okeyfum_types
+	okeyfum_time
+	okeyfum_keyboard_device
 	main
 
 .DEFAULT: all

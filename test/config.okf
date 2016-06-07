@@ -1,0 +1,11 @@
+# sample comment
+key up sample = v, b
+key down sample = v, b
+
+deflock b
+
+defvar $var_name = a,b,c,d
+
+lock b {
+  key up a = c
+}

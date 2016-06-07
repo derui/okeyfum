@@ -9,7 +9,11 @@ type 'a fd = int
 type user
 type keyboard
 
-module T = Ffi_bindings.Types(Ffi_generated_types)
+module T = Okeyfum_ffi_bindings.Types(Okeyfum_ffi_generated_types)
+module Types = Okeyfum_types
+module Log = Okeyfum_log
+module Time = Okeyfum_time
+module Util = Okeyfum_util
 
 module Inner = struct
   let dev_open = foreign "open" ~check_errno:true (string @-> int @-> returning int)

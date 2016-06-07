@@ -1,6 +1,8 @@
 open Ctypes
 open Foreign
 
+module Types = Okeyfum_types
+
 module Inner = struct
   let gettimeofday = foreign "gettimeofday" ~check_errno:true
     (ptr Types.Timeval.t @-> Types.Timezone.t @-> returning int)

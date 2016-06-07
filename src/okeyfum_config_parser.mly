@@ -1,5 +1,6 @@
 %{
  exception SyntaxError of string
+ module Config_type = Okeyfum_config_type
 %}
 
 (* punctuators *)
@@ -16,7 +17,7 @@
 %token <string> IDENT
 %token EOF
 %start parser_main
-%type <Config_type.main option> parser_main
+%type <Okeyfum_config_type.main option> parser_main
 %%
 
 parser_main:
@@ -41,7 +42,7 @@ EOF {None}
   ;
 
   key_statement:
-    KEYWORD_KEY identifier key_state EQ key_sequences { Config_type.Cstm_key ($2, $3, $5)}
+    KEYWORD_KEY key_state identifier EQ key_sequences {Config_type.Cstm_key ($3, $2, $5)}
   ;
 
   key_state:
@@ -79,9 +80,9 @@ EOF {None}
   ;
 
   identifier:
-    IDENT {Config_type.Cexp_var ($1)}
+    IDENT {Config_type.Cexp_ident ($1)}
   ;
 
   variable:
-    VARIABLE {Config_type.Cexp_ident ($1)}
+    VARIABLE {Config_type.Cexp_var ($1)}
   ;

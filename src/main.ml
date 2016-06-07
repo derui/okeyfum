@@ -1,3 +1,6 @@
+module Keyboard_device = Okeyfum_keyboard_device
+module Log = Okeyfum_log
+
 let usage = "usage: okeyfum [options] <device>"
 
 let loop ~user ~keyboard =

@@ -52,16 +52,16 @@ OCAMLOPTFLAGS += -warn-error -58
 
 INCLUDES += $(shell ocamlfind query ctypes.stubs) $(shell ocamlfind query stdlib)
 
-OCamlProgram(gen-type-stub, generate_types ../src/ffi_bindings)
+OCamlProgram(gen-type-stub, generate_types ../src/okeyfum_ffi_bindings)
 CProgram(ffi_ml_types_stubgen, ffi_ml_types_stubgen)
 ffi_ml_types_stubgen.c: gen-type-stub$(EXE)
 	./gen-type-stub$(EXE) > $@
 
-../src/ffi_generated_types.ml: ffi_ml_types_stubgen$(EXE)
+../src/okeyfum_ffi_generated_types.ml: ffi_ml_types_stubgen$(EXE)
 	./ffi_ml_types_stubgen$(EXE) > $@
 
-stub: ../src/ffi_generated_types.ml
+stub: ../src/okeyfum_ffi_generated_types.ml
 
 clean:
 	rm -f ffi_ml_type_stubgen.*
-	rm -f ../src/ffi_generated_types.ml
+	rm -f ../src/okeyfum_ffi_generated_types.ml

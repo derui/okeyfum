@@ -3,6 +3,10 @@ open Lexing
 
 type t
 
+module Config_type = Okeyfum_config_type
+module Config_parser = Okeyfum_config_parser
+module Config_lexer = Okeyfum_config_lexer
+
 module Keydef_map = Map.Make(struct
   type t = string * Config_type.state
   let compare (aa, ab) (ba, bb) =
@@ -25,20 +29,52 @@ let parse_with_error lexbuf =
   | Config_parser.Error -> Printf.fprintf stderr "%a: syntax error\n" print_position lexbuf;
     exit (-1)
 
-module Config = struct
-    
+module Config : sig
+  (* The type of key sequence *)
+  type key = [`Var of string | `Id of string | `Func of string * string list]
+
+  (* The type of key-sequences related key name and state *)
+  type keydef_map = key list Keydef_map.t
+
+  (* The type of key-sequences when a lock key is locked *)
+  type lock_decl = string * keydef_map
+
+  (* The type of configuration *)
+  type t
+
+  val variable_map : t -> (string, key list) Hashtbl.t
+  (* [variable_map t] get the map of variable of [t] *)
+
+  val lock_decls : t -> lock_decl list
+  (* [lock_decls t] get the lock declarations of [t] *)
+
+  val lock_defs : t -> string list
+  (* [lock_defs t] get the lock key definitions of [t] *)
+
+  val keydef_map : t -> keydef_map
+  (* [keydef_map t] get the key definition that is key sequence of [t] *)
+
+  val make : Config_type.main -> t
+(* [make prog] create the new configuration from tree of configuration DSL *)
+
+end = struct
+
   type key = [`Var of string | `Id of string | `Func of string * string list]
 
   type keydef_map = key list Keydef_map.t
   type lock_decl = string * keydef_map
 
   type t = {
-    key_map: (string, int) Hashtbl.t;
     variable_map: (string, key list) Hashtbl.t;
     lock_decls: lock_decl list;
     lock_defs: string list;
-    keydef_map: key list Keydef_map.t; (* key-definition map *)
+    keydef_map: keydef_map; (* key-definition map *)
   }
+
+  let variable_map {variable_map;_} = variable_map
+  let lock_decls {lock_decls;_} = lock_decls
+  let lock_defs {lock_defs;_} = lock_defs
+  let keydef_map {keydef_map;_} = keydef_map
 
   (* expression to key definition *)
   let exp_to_key = function
@@ -94,7 +130,6 @@ module Config = struct
 
   let make = function
     | Config_type.Cprog_main stmts -> build_statement {
-      key_map = Hashtbl.create 100;
       variable_map = Hashtbl.create 100;
       lock_decls = [];
       lock_defs = [];
