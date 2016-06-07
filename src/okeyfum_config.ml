@@ -1,8 +1,6 @@
 (* This module provide read and parse config from file *)
 open Lexing
 
-type t
-
 module Config_type = Okeyfum_config_type
 module Config_parser = Okeyfum_config_parser
 module Config_lexer = Okeyfum_config_lexer
