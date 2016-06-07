@@ -29,6 +29,6 @@ let () =
   if !device = "" then begin
     Log.error "Not specitied keyboard device";
     exit 2
-  end else 
+  end else
     Keyboard_device.open_with ~dev:!device ~f:loop
 

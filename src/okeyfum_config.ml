@@ -54,6 +54,7 @@ module Config : sig
   val keydef_map : t -> keydef_map
   (* [keydef_map t] get the key definition that is key sequence of [t] *)
 
+  val empty : t
   val make : Config_type.main -> t
 (* [make prog] create the new configuration from tree of configuration DSL *)
 
@@ -128,23 +129,21 @@ end = struct
          build_statement {config with variable_map = variable_map'} rest
     end
 
+  let empty = {
+    variable_map = Hashtbl.create 100;
+    lock_decls = [];
+    lock_defs = [];
+    keydef_map = Keydef_map.empty;
+  }
+
   let make = function
-    | Config_type.Cprog_main stmts -> build_statement {
-      variable_map = Hashtbl.create 100;
-      lock_decls = [];
-      lock_defs = [];
-      keydef_map = Keydef_map.empty;
-    } stmts
+    | Config_type.Cprog_main stmts -> build_statement empty stmts
 
 end
 
-let program_to_config prog =
-  Config.make prog
-
 let parse_and_print lexbuf =
   match parse_with_error lexbuf with
-  | Some prog ->
-     Some (program_to_config prog)
+  | Some prog -> Some (Config.make prog)
   | None -> None
 
 let load filename =
