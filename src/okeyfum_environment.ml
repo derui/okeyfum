@@ -5,7 +5,6 @@ type t = {
   enabled: bool;
 }
 
-
 let make config =
   let module C = Okeyfum_config.Config in
   let decls = C.lock_defs config in 
@@ -18,6 +17,12 @@ let lock_state_unlock ~env ~name = Hashtbl.add env.lock_state name false
 let lock_state_toggle ~env ~name =
   let cur = try Hashtbl.find env.lock_state name with Not_found -> false in
   Hashtbl.add env.lock_state name (not cur)
+
+let is_any_locked t =
+  Hashtbl.fold (fun _ v b -> if v then true else b) t.lock_state
+
+let is_locked ~env ~name =
+  try Hashtbl.find env.lock_state name with Not_found -> false 
 
 let enable_converter t = {t with enabled = true}
 let disable_converter t = {t with enabled = false}

@@ -17,6 +17,9 @@ val lock_state_unlock : env:t -> name:string -> unit
 val lock_state_toggle : env:t -> name:string -> unit
 (* [lock_state_toggle ~env ~name] change state of lock [name] to invert current state in [env] *)
 
+val is_any_locked: t -> bool
+(* [is_any_locked t] return true if environment contains status locked. *)
+
 val enable_converter: t -> t
 (* [enable_converter env] enable converter for key input event. *)
 
