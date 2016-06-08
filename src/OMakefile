@@ -57,6 +57,7 @@ files[] =
 	okeyfum_config_parser
 	okeyfum_config
 	okeyfum_environment
+	okeyfum_key
 	okeyfum_ffi_bindings
 	okeyfum_ffi_generated_types
 	okeyfum_log

@@ -1,3 +1,6 @@
+(*
+  This module provides environment type and manipulate functions.
+*)
 
 (* The environment of this application *)
 type t
@@ -14,5 +17,11 @@ val lock_state_unlock : env:t -> name:string -> unit
 val lock_state_toggle : env:t -> name:string -> unit
 (* [lock_state_toggle ~env ~name] change state of lock [name] to invert current state in [env] *)
 
-val find_key_code : env:t -> name:string -> int option
-(* [find_key_code ~env ~name] find key code with given key name. *)
+val enable_converter: t -> t
+(* [enable_converter env] enable converter for key input event. *)
+
+val disable_converter: t -> t
+(* [disable_converter env] disable converter for key input event. *)
+
+val is_enable: t -> bool
+(* [is_enable env] get current state for enabling converter. *)
