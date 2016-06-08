@@ -65,6 +65,8 @@ files[] =
 	okeyfum_types
 	okeyfum_time
 	okeyfum_keyboard_device
+	okeyfum_converter
+	okeyfum_evaluator
 	main
 
 .DEFAULT: all

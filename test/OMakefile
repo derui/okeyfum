@@ -52,6 +52,7 @@ OCAMLOPTFLAGS += -warn-error -58
 
 files[] =
 	config_test
+	converter_test
 
 foreach(x => ..., $(files))
 	OCamlProgram($(x), $(x) $(removesuffix .ml, $(ls ../src/okeyfum*.ml)) )

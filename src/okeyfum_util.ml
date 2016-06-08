@@ -11,3 +11,7 @@ let protect ~f ~finally =
     finally ();
     raise e;
   end
+
+let option_get = function
+  | Some s -> s
+  | None -> failwith "None to get something"

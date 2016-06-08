@@ -158,4 +158,9 @@ module Uinput_user_dev = struct
     t
 
   let () = seal t
-end 
+end
+
+type state = [`UP | `DOWN]
+type expanded_key =
+    Key of Input_event.t
+  | Func of string * string list
