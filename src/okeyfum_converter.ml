@@ -29,32 +29,35 @@ and expand_key_seq config seq =
 
 let is_not_key_event {IE.typ=typ;_} = typ <> GT.Event_type.ev_key
 
-let resolve_key_map config env event =
-  let key = match K.key_code_to_name event.IE.code with
-    | None -> let module L = Okeyfum_log in
-              L.error (Printf.sprintf "Not defined key code: %d" event.IE.code);
-              raise Not_found
-    | Some k -> k
-  in
+let event_to_key_of_map event =
   let state = match event.IE.value with
     | 0L -> `UP
     | _ -> `DOWN
   in
-  let current_lock_key = match E.locked_keys env with
-    | [] -> None
-    | k :: _ -> Some k
-  in
-  let key_map = match current_lock_key with
-    | None -> C.keydef_map config
-    | Some k -> C.lock_decls config |> List.filter (fun (k', _) -> k = k') |> List.hd |> snd
-  in
-  let module M = Okeyfum_config.Keydef_map in 
+  match K.key_code_to_name event.IE.code with
+    | None -> let module L = Okeyfum_log in
+              L.debug (Printf.sprintf "Not defined key code: %d" event.IE.code);
+              None
+    | Some k -> Some (k, state)
 
-  match try Some (M.find (key,state) key_map) with Not_found -> None with
-  | None -> let module L = Okeyfum_log in
-            L.debug (Printf.sprintf "Not found defined key sequence for : %s" key);
-            None
-  | Some seq -> Some (expand_key_seq config seq)
+(* resolve key event to key sequence to evalate with environment and config *)
+let resolve_key_map config env event =
+  let key = event_to_key_of_map event in
+  let key_map = match E.locked_keys env with
+    | [] -> C.keydef_map config
+    | k :: _ -> C.lock_decls config |> List.filter (fun (k', _) -> k = k') |> List.hd |> snd
+  in
+  let module M = Okeyfum_config.Keydef_map in
+  match key with
+  | None -> None
+  | Some key -> begin
+    match try Some (M.find key key_map) with Not_found -> None with
+    | None -> let module L = Okeyfum_log in
+              let key, _  = key in
+              L.debug (Printf.sprintf "Not found defined key sequence for : %s" key);
+              None
+    | Some seq -> Some (expand_key_seq config seq)
+  end
 
 let convert_event_to_seq ~config ~env ~event =
   let default_seq = [T.Key (event.IE.code)] in
