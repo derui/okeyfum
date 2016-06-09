@@ -18,11 +18,8 @@ let lock_state_toggle ~env ~name =
   let cur = try Hashtbl.find env.lock_state name with Not_found -> false in
   Hashtbl.add env.lock_state name (not cur)
 
-let is_any_locked t =
-  Hashtbl.fold (fun _ v b -> if v then true else b) t.lock_state
-
-let is_locked ~env ~name =
-  try Hashtbl.find env.lock_state name with Not_found -> false 
+let locked_keys t =
+  Hashtbl.fold (fun k v b -> if v then k :: b else b) t.lock_state []
 
 let enable_converter t = {t with enabled = true}
 let disable_converter t = {t with enabled = false}

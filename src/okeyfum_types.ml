@@ -2,6 +2,10 @@ open Ctypes
 
 module T = Okeyfum_ffi_bindings.Types(Okeyfum_ffi_generated_types)
 
+type expanded_key =
+    Key of int
+  | Func of string * string list
+
 (* Posix timeval integration *)
 module Timeval = struct
   type t = {
