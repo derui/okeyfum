@@ -1,12 +1,13 @@
 (* This module provide read and parse config from file *)
 open Lexing
 
+module T = Okeyfum_types
 module Config_type = Okeyfum_config_type
 module Config_parser = Okeyfum_config_parser
 module Config_lexer = Okeyfum_config_lexer
 
 module Keydef_map = Map.Make(struct
-  type t = string * Config_type.state
+  type t = string * T.state
   let compare (aa, ab) (ba, bb) =
     let key_compared = Pervasives.compare aa ba in
     if key_compared <> 0 then key_compared

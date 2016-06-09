@@ -2,10 +2,6 @@ open Ctypes
 
 module T = Okeyfum_ffi_bindings.Types(Okeyfum_ffi_generated_types)
 
-type expanded_key =
-    Key of int
-  | Func of string * string list
-
 (* Posix timeval integration *)
 module Timeval = struct
   type t = {
@@ -162,4 +158,9 @@ module Uinput_user_dev = struct
     t
 
   let () = seal t
-end 
+end
+
+type state = [`UP | `DOWN]
+type expanded_key =
+    Key of Input_event.t
+  | Func of string * string list

@@ -1,9 +1,9 @@
 
-type state = [`UP | `DOWN]
+module T = Okeyfum_types
 type main =
     Cprog_main of statement list
 and statement =
-    Cstm_key of expression * state * expression list
+    Cstm_key of expression * T.state * expression list
   | Cstm_deflock of expression
   | Cstm_lock of expression * statement list
   | Cstm_defvar of expression * expression list
