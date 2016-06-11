@@ -6,7 +6,7 @@ module U = Okeyfum_util
 module C = Okeyfum_config.Config
 
 module GT = Okeyfum_ffi_bindings.Types(Okeyfum_ffi_generated_types)
-let event_to_state {IE.value=value}= match value with
+let event_to_state {IE.value=value;_} = match value with
   | 0L -> `UP
   | _ -> `DOWN
 
@@ -37,7 +37,10 @@ let rec expand_key config state = function
   | `Var k -> let vars = C.variable_map config in
               let vars = try Hashtbl.find vars k with Not_found -> [] in
               expand_key_seq config state vars
-  | `Func (fname, params) -> [T.Func(fname, params)]
+  | `Func (fname, params) ->
+     let module L = Okeyfum_log in
+     L.debug (Printf.sprintf "function detected : %s" fname);
+     [T.Func(fname, params)]
 
 and expand_key_seq config state seq =
   List.fold_left (fun seq key ->
@@ -68,8 +71,7 @@ let resolve_key_map config env event =
 
 let convert_event_to_seq ~config ~env ~event =
   let default_seq = [T.Key event] in
-  if not (E.is_enable env) then default_seq
-  else if is_not_key_event event then default_seq
+  if is_not_key_event event then default_seq
   else
     match resolve_key_map config env event with
     | None -> default_seq

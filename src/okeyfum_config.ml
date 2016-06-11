@@ -1,6 +1,7 @@
 (* This module provide read and parse config from file *)
 open Lexing
 
+module Log = Okeyfum_log
 module T = Okeyfum_types
 module Config_type = Okeyfum_config_type
 module Config_parser = Okeyfum_config_parser
@@ -141,11 +142,19 @@ end = struct
 end
 
 let parse_and_print lexbuf =
+  Log.info "Start loading configuration";
   match parse_with_error lexbuf with
-  | Some prog -> Some (Config.make prog)
-  | None -> None
+  | Some prog -> begin
+    Log.info "Finish loading configuration";
+    Some (Config.make prog)
+  end
+  | None -> begin
+    Log.info "Cannot loading configuration";
+    None
+  end
 
 let load filename =
+  Log.info (Printf.sprintf "Start loading file: %s" filename);
   let inx = open_in filename in
   let lexbuf = Lexing.from_channel inx in
   lexbuf.lex_curr_p <- {lexbuf.lex_curr_p with pos_fname = filename};

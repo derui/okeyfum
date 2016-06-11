@@ -67,6 +67,7 @@ files[] =
 	okeyfum_keyboard_device
 	okeyfum_converter
 	okeyfum_evaluator
+	okeyfum_handler
 	main
 
 .DEFAULT: all

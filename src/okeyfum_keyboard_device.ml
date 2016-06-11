@@ -102,20 +102,27 @@ let create_user_dev fd =
   Log.debug "Creating user device finished"
 
 (* Open keyboard device *)
-let open_key_dev dev =
+let open_key_dev ?(grab=true) dev =
   let fd = Inner.dev_open dev T.Open_flag.rdwr in
   if fd < 0 then failwith "Not found specified keyboard device"
   else begin
     release_all_keys fd;
-    Inner.ioctl fd Signed.Int64.(of_int T.Input_ioctl.grab) (Util.int_to_voidp 1) |> ignore;
+    if grab then begin
+      Inner.ioctl fd Signed.Int64.(of_int T.Input_ioctl.grab) (Util.int_to_voidp 1) |> ignore;
+      Log.debug ("Grabbing device is success!: " ^ dev)
+    end else ();
     fd
   end
 
 (* Close keyboard device *)
-let close_key_dev fd =
+let close_key_dev ?(grab=true) fd =
   Log.debug "Closing keyboard device start...";
   release_all_keys fd;
-  Inner.ioctl fd Signed.Int64.(of_int T.Input_ioctl.grab) (Util.int_to_voidp 0) |> ignore;
+
+  if grab then
+    Inner.ioctl fd Signed.Int64.(of_int T.Input_ioctl.grab) (Util.int_to_voidp 0) |> ignore
+  else ();
+
   Inner.dev_close fd |> ignore;
   Log.debug "Closing keyboard device finished!"
 
@@ -124,7 +131,7 @@ let handler user keyboard =
   if user <> -1 then close_user_dev user else ();
   if keyboard <> -1 then close_key_dev keyboard else ()
 
-let open_with ~dev ~f =
+let open_with ?(grab=true) ~dev ~f () =
   let fd : keyboard fd ref = ref (-1)
   and ufd : user fd ref = ref (-1) in
 
@@ -133,8 +140,7 @@ let open_with ~dev ~f =
   try
     Util.protect ~f:(fun () ->
       Log.debug ("Grabbing device : " ^ dev);
-      fd := open_key_dev dev;
-      Log.debug ("Grabbing device is success!: " ^ dev);
+      fd := open_key_dev ~grab dev;
 
       Util.protect ~f:(fun () ->
         ufd := open_user_dev ();
@@ -143,7 +149,7 @@ let open_with ~dev ~f =
         f ~user:!ufd ~keyboard:!fd
       ) ~finally:(fun () -> close_user_dev !ufd)
 
-    ) ~finally:(fun () -> close_key_dev !fd)
+    ) ~finally:(fun () -> close_key_dev ~grab !fd)
   with
   | Unix.Unix_error (e, fname, param) -> begin
     let e = Unix.error_message e in
@@ -166,7 +172,7 @@ let read_key fd =
 let write_key fd data =
   let module U = Types.Input_event in
   let module UI = T.Uinput in
-  Log.debug (Printf.sprintf "read key type = %d; code = %d; value = %Ld"
+  Log.debug (Printf.sprintf "write key type = %d; code = %d; value = %Ld"
                data.U.typ data.U.code data.U.value);
 
   let data = U.(of_ocaml data) |> addr |> to_voidp in

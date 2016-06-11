@@ -7,7 +7,7 @@ key down a = v, b
 key down b = $var_name, c
 
 key up d = $a, &fun(b)
-key up e = a, &fun(b)
+key up e = &fun()
 
 deflock b
 

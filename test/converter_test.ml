@@ -95,13 +95,9 @@
                    value = 0L;
                    time = Okeyfum_types.Timeval.empty;
                   } in
-      let key_to_ev k =
-        let module E = Okeyfum_types.Input_event in
-        {base with E.code = Okeyfum_key.key_name_to_code k |> Okeyfum_util.option_get} in
-      let a = key_to_ev "a" in
       let keys = C.convert_event_to_seq ~config ~env ~event:base in
       let module T = Okeyfum_types in
-      keys [@eq [T.Key a;T.Func ("fun", ["b"])]]
+      keys [@eq [T.Func ("fun", [])]]
    | None -> false [@false "Loading failure"]
 
  let%spec "OKeyfum key converter should resolve with locked key" =

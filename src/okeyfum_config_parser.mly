@@ -74,7 +74,7 @@ EOF {None}
   key_sequence:
     variable {$1}
                           |identifier {$1}
-                          |AND IDENT LPAREN separated_nonempty_list(COMMA, IDENT) RPAREN {
+                          |AND IDENT LPAREN separated_list(COMMA, IDENT) RPAREN {
                             Config_type.Cexp_funcall ($2, $4)
                           }
   ;

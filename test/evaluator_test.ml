@@ -11,8 +11,13 @@
                    value = 1L;
                    time = Okeyfum_types.Timeval.empty;
                   } in
+      let syn = let module I = Okeyfum_types.Input_event in
+                  {I.empty with I.typ = GT.Event_type.ev_syn;
+                    code = GT.Input_syn.report;
+                    value = 0L;
+                  } in
       let keys = E.eval_key_seq ~env ~seq:[Okeyfum_types.Key event] in
-      keys [@eq (env, [Ok(event)])]
+      keys [@eq (env, [event;syn])]
    | None -> false [@false "Loading failure"]
 
  let%spec "OKeyfum sequence evaluator should evaluate function in sequence" =
