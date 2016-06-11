@@ -103,4 +103,26 @@
       let module T = Okeyfum_types in
       keys [@eq [T.Key a;T.Func ("fun", ["b"])]]
    | None -> false [@false "Loading failure"]
+
+ let%spec "OKeyfum key converter should resolve with locked key" =
+   match Okeyfum_config.load "./config.okf" with
+   | Some config ->
+      let env = Okeyfum_environment.make config in
+      let env = Okeyfum_environment.enable_converter env in
+      let env = Okeyfum_environment.lock_state_lock ~env ~name:"b" in
+      let module C = Okeyfum_converter in
+      let base = let module E = Okeyfum_types.Input_event in
+                  {E.typ = GT.Event_type.ev_key;
+                   code = Okeyfum_key.key_name_to_code "a" |> Okeyfum_util.option_get;
+                   value = 0L;
+                   time = Okeyfum_types.Timeval.empty;
+                  } in
+      let key_to_ev k =
+        let module E = Okeyfum_types.Input_event in
+        {base with E.code = Okeyfum_key.key_name_to_code k |> Okeyfum_util.option_get} in
+      let c = key_to_ev "c" in
+      let keys = C.convert_event_to_seq ~config ~env ~event:base in
+      let module T = Okeyfum_types in
+      keys [@eq [T.Key c]]
+   | None -> false [@false "Loading failure"]
 ]

@@ -50,7 +50,6 @@ let eval_key_seq ~env ~seq =
   let env = List.fold_left (fun env f ->
     match invoke_function env f with
     | Ok env -> env
-    | Error mes ->
-       let module L = Okeyfum_log in L.error mes; env
+    | Error mes -> let module L = Okeyfum_log in L.error mes; env
   ) env funcs in
   (env, keys)
