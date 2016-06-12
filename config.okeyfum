@@ -1,0 +1,119 @@
+key down f12 = &enable()
+key down f11 = &disable()
+
+# 月配列E-X
+deflock shift1
+deflock shift2
+deflock shift3
+
+key down s = &lock(shift1)
+key down e = &lock(shift2)
+key down i = &lock(shift3)
+
+defvar $clear = &unlock(shift1),&unlock(shift2),&unlock(shift3)
+
+key down q = w,a,$clear
+key down w = t,a,$clear
+key down f = x,t,u,$clear
+key down p = t,e,$clear
+key down g = x,y,o,$clear
+key down j = t,u,$clear
+key down l = n,n,$clear
+key down u = i,$clear
+key down y = s,i,$clear
+key down semicolon = k,e,$clear
+key down leftbrace = h,e,$clear
+key down a = n,o,$clear
+key down r = t,o,$clear
+key down t = k,a,$clear
+key down d = k,o,$clear
+key down h = k,u,$clear
+key down n = u,$clear
+key down o = n,a,$clear
+key down apostrophe = h,i,$clear
+key down z = s,u,$clear
+key down x = h,a,$clear
+key down c = n,i,$clear
+key down v = d,e,$clear
+key down b = s,a,$clear
+key down k = m,a,$clear
+key down m = r,u,$clear
+key down comma = k,i,$clear
+key down dot = m,o,$clear
+key down slash = minus,$clear
+
+lock shift1 {
+
+  key down w = d,u,&clear
+  key down p = v,u,&clear
+  key down g = d,i,&clear
+  key down r = leftbrace,&clear
+  key down t = comma,&clear
+  key down d = slash,&clear
+
+  key down j = g,u,&clear
+  key down l = t,i,&clear
+  key down u = x,y,u,&clear
+  key down y = s,e,&clear
+  key down semicolon = m,e,&clear
+
+  key down h = m,u,&clear
+  key down n = r,a,&clear
+  key down e = r,i,&clear
+  key down i = m,i,&clear
+  key down o = s,o,&clear
+
+  key down k = x,y,a,&clear
+  key down m = h,u,&clear
+  key down comma = y,a,&clear
+  key down dot = b,e,&clear
+  key down slash = b,i,&clear
+}
+
+lock shift2 {
+
+  key down q = n,u,&clear
+  key down w = g,o,&clear
+  key down f = r,e,&clear
+  key down p = y,o,&clear
+  key down g = b,o,&clear
+  key down l = x,a,&clear
+  key down y = x,i,&clear
+
+  key down a = e,&clear
+  key down r = a,&clear
+  key down s = o,&clear
+  key down t = g,a,&clear
+  key down d = w,o,&clear
+  key down n = dot,&clear
+  key down i = rightbrace,&clear
+
+  key down z = y,u,&clear
+  key down x = n,e,&clear
+  key down c = g,e,&clear
+  key down v = h,o,&clear
+  key down b = r,o,&clear
+  key down k = x,u,&clear
+  key down m = x,e,&clear
+  key down dot = x,o,&clear
+}
+
+lock shift3 {
+  key down q = z,a,&clear
+  key down w = g,i,&clear
+  key down f = z,u,&clear
+  key down p = z,e,&clear
+  key down g = z,o,&clear
+  
+  key down b = b,a,&clear
+  key down r = z,i,&clear
+  key down s = d,o,&clear
+  key down t = d,a,&clear
+  key down d = b,u,&clear
+
+  key down z = p,a,&clear
+  key down x = p,i,&clear
+  key down c = p,u,&clear
+  key down v = p,e,&clear
+  key down b = p,o,&clear
+}
