@@ -8,7 +8,7 @@
       let module C = Okeyfum_converter in
       let event = let module E = Okeyfum_types.Input_event in
                   {E.typ = GT.Event_type.ev_key;
-                   code = Okeyfum_key.key_name_to_code "a" |> Okeyfum_util.option_get;
+                   code = Okeyfum_key.key_name_to_code "v" |> Okeyfum_util.option_get;
                    value = 1L;
                    time = Okeyfum_types.Timeval.empty;
                   } in
@@ -97,7 +97,7 @@
                   } in
       let keys = C.convert_event_to_seq ~config ~env ~event:base in
       let module T = Okeyfum_types in
-      keys [@eq [T.Func ("fun", [])]]
+      keys [@eq [T.Func ("&fun", ["c"])]]
    | None -> false [@false "Loading failure"]
 
  let%spec "OKeyfum key converter should resolve with locked key" =
@@ -120,5 +120,21 @@
       let keys = C.convert_event_to_seq ~config ~env ~event:base in
       let module T = Okeyfum_types in
       keys [@eq [T.Key c]]
+   | None -> false [@false "Loading failure"]
+
+ let%spec "OKeyfum key converter should resolve function key" =
+   match Okeyfum_config.load "./config.okf" with
+   | Some config ->
+      let env = Okeyfum_environment.make config in
+      let module C = Okeyfum_converter in
+      let base = let module E = Okeyfum_types.Input_event in
+                  {E.typ = GT.Event_type.ev_key;
+                   code = Okeyfum_key.key_name_to_code "f12" |> Okeyfum_util.option_get;
+                   value = 1L;
+                   time = Okeyfum_types.Timeval.empty;
+                  } in
+      let keys = C.convert_event_to_seq ~config ~env ~event:base in
+      let module T = Okeyfum_types in
+      keys [@eq [T.Func ("&enable", [])]]
    | None -> false [@false "Loading failure"]
 ]

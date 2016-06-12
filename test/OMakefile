@@ -54,6 +54,7 @@ files[] =
 	config_test
 	converter_test
 	evaluator_test
+	environment_test
 
 foreach(x => ..., $(files))
 	OCamlProgram($(x), $(x) $(removesuffix .ml, $(ls ../src/okeyfum*.ml)) )

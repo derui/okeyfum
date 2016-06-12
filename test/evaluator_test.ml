@@ -32,7 +32,7 @@
                    time = Okeyfum_types.Timeval.empty;
                   } in
       let module T = Okeyfum_types in 
-      let env, _ = E.eval_key_seq ~env ~seq:[T.Key event;T.Func ("enable", [])] in
+      let env, _ = E.eval_key_seq ~env ~seq:[T.Key event;T.Func ("&enable", [])] in
       Okeyfum_environment.is_enable env [@true "converter enabled"]
    | None -> false [@false "Loading failure"]
 
@@ -42,7 +42,7 @@
       let env = Okeyfum_environment.make config in
       let module E = Okeyfum_evaluator in
       let module T = Okeyfum_types in 
-      let env, evs = E.eval_key_seq ~env ~seq:[T.Func ("enable", []);T.Func ("lock", ["b"])] in
+      let env, evs = E.eval_key_seq ~env ~seq:[T.Func ("&enable", []);T.Func ("&lock", ["b"])] in
       evs [@eq []];
       Okeyfum_environment.is_enable env [@true "converter enabled"];
       Okeyfum_environment.locked_keys env [@eq ["b"]];

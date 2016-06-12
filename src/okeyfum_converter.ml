@@ -6,18 +6,6 @@ module U = Okeyfum_util
 module C = Okeyfum_config.Config
 
 module GT = Okeyfum_ffi_bindings.Types(Okeyfum_ffi_generated_types)
-let event_to_state {IE.value=value;_} = match value with
-  | 0L -> `UP
-  | _ -> `DOWN
-
-let event_to_key_of_map event =
-  let state = event_to_state event in
-  match K.key_code_to_name event.IE.code with
-    | None -> let module L = Okeyfum_log in
-              L.debug (Printf.sprintf "Not defined key code: %d" event.IE.code);
-              None
-    | Some k -> Some (k, state)
-
 (* Expand key sequence to terms are only code and function to invoke later *)
 let rec expand_key config state = function
   | `Id k -> begin
@@ -52,7 +40,7 @@ let is_not_key_event {IE.typ=typ;_} = typ <> GT.Event_type.ev_key
 
 (* resolve key event to key sequence to evalate with environment and config *)
 let resolve_key_map config env event =
-  let key = event_to_key_of_map event in
+  let key = U.event_to_key_of_map event in
   let key_map = match E.locked_keys env with
     | [] -> C.keydef_map config
     | k :: _ -> C.lock_decls config |> List.filter (fun (k', _) -> k = k') |> List.hd |> snd

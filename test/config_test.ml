@@ -46,7 +46,7 @@
    | Some c -> begin
      let module M = Okeyfum_config.Keydef_map in
      let seq = Okeyfum_config.(M.find ("d", `UP) (Config.keydef_map c)) in
-     seq [@eq [`Var "$a";`Func ("fun", ["b"])]]
+     seq [@eq [`Var "$a";`Func ("&fun", ["b"])]]
    end
    | None -> false [@false "Loading failure"]
 ]

@@ -34,10 +34,10 @@ rule token = parse
   | ')' { RPAREN }
   | '=' { EQ }
   | ',' { COMMA }
-  | '&' { AND }
   | reserved_word { to_keyword (Lexing.lexeme lexbuf)}
   | identifier_start (identifier_start | ['0'-'9'])* as ident {IDENT(ident)}
   | variable_start (identifier_start | ['0'-'9'])* as ident {VARIABLE(ident)}
+  | '&' identifier_start (identifier_start | ['0'-'9'])* as ident {FUNCTION(ident)}
 
 and single_line_comment buf = parse
     | line_terminator {next_line lexbuf;token lexbuf}

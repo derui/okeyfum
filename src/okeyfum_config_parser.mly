@@ -15,6 +15,7 @@
 
 %token <string> VARIABLE
 %token <string> IDENT
+%token <string> FUNCTION
 %token EOF
 %start parser_main
 %type <Okeyfum_config_type.main option> parser_main
@@ -74,8 +75,8 @@ EOF {None}
   key_sequence:
     variable {$1}
                           |identifier {$1}
-                          |AND IDENT LPAREN separated_list(COMMA, IDENT) RPAREN {
-                            Config_type.Cexp_funcall ($2, $4)
+                          |FUNCTION LPAREN separated_list(COMMA, IDENT) RPAREN {
+                            Config_type.Cexp_funcall ($1, $3)
                           }
   ;
 

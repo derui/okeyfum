@@ -18,32 +18,32 @@ let invoke_function env = function
   | T.Func (fname, param) -> begin
     let module L = Okeyfum_log in
     match fname with
-    | "toggle" -> begin
+    | "&toggle" -> begin
       match param with
       | [name] ->
          L.debug (Printf.sprintf "toggle lock for: %s" name);
          Ok (E.lock_state_toggle ~env ~name:(List.hd param))
       | _ -> Error "the number of arguments of 'toggle' function must be 1."
     end
-    | "lock" -> begin match param with
+    | "&lock" -> begin match param with
       | [name] ->
          L.debug (Printf.sprintf "lock: %s" name);
          Ok (E.lock_state_lock ~env ~name)
       | _ -> Error "the number of arguments of 'lock' function must be 1"
     end
-    | "unlock" -> begin match param with
+    | "&unlock" -> begin match param with
       | [name] ->
          L.debug (Printf.sprintf "unlock: %s" name);
          Ok (E.lock_state_unlock ~env ~name)
       | _ -> Error "the number of arguments of 'unlock' function must be 1"
     end
-    | "enable" -> begin match param with
+    | "&enable" -> begin match param with
       | [] ->
          L.info "Okeyfum converter enabled";
          Ok (E.enable_converter env) 
       | _ -> Error "the number of arguments of 'enable' function must be 0"
     end
-    | "disable" -> begin match param with
+    | "&disable" -> begin match param with
       | [] ->
          L.info "Okeyfum converter disabled";
          Ok (E.disable_converter env) 
@@ -67,6 +67,7 @@ let eval_key_seq ~env ~seq =
     | Ok keys' -> keys @ keys'
     | Error e -> Okeyfum_log.error e; keys
   ) [] keys in
+
   let env = List.fold_left (fun env f ->
     match invoke_function env f with
     | Ok env -> env
