@@ -164,3 +164,8 @@ type state = [`UP | `DOWN]
 type expanded_key =
     Key of Input_event.t
   | Func of string * string list
+
+type conversion_result =
+    To_eval of expanded_key list
+  | No_def of expanded_key list
+  | Not_key of expanded_key list

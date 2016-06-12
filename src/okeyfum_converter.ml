@@ -59,8 +59,8 @@ let resolve_key_map config env event =
 
 let convert_event_to_seq ~config ~env ~event =
   let default_seq = [T.Key event] in
-  if is_not_key_event event then default_seq
+  if is_not_key_event event then T.Not_key default_seq
   else
     match resolve_key_map config env event with
-    | None -> default_seq
-    | Some seq -> seq
+    | None -> T.No_def default_seq
+    | Some seq -> T.To_eval seq
