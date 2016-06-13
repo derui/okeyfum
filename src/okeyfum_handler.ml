@@ -24,7 +24,7 @@ let handle_key_event config ~user ~keyboard =
       | T.To_eval seq -> Eval.eval_key_seq ~env ~seq
       | T.No_def seq -> let env, keys = Eval.eval_key_seq ~env ~seq in
                         (clear_lock_status env, keys)
-      | T.Not_key seq -> Eval.eval_key_seq ~env ~seq
+      | T.Not_key seq -> (env, [key])
     in
 
       (* checking converter status in updated environment here,
@@ -33,16 +33,17 @@ let handle_key_event config ~user ~keyboard =
       *)
     let module Time = Okeyfum_time in
     let module E = Okeyfum_types.Input_event in 
-    if Okeyfum_environment.is_enable env then
+    if Okeyfum_environment.is_enable env then begin
       List.iter (fun key ->
         let key = {key with E.time = Time.now ()} in
         Keyboard_device.write_key user key
       ) keys
-    else
+    end else begin
       let key = {key with E.time = Time.now ()} in
-      Keyboard_device.write_key user key;
-
-      loop' env
+      Keyboard_device.write_key user key
+    end;
+    
+    loop' env
   in
 
   loop' env

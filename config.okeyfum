@@ -41,79 +41,180 @@ key down m = r,u,$clear
 key down comma = k,i,$clear
 key down dot = m,o,$clear
 key down slash = minus,$clear
+key up q = w,a,$clear
+key up w = t,a,$clear
+key up f = x,t,u,$clear
+key up p = t,e,$clear
+key up g = x,y,o,$clear
+key up j = t,u,$clear
+key up l = n,n,$clear
+key up u = i,$clear
+key up y = s,i,$clear
+key up semicolon = k,e,$clear
+key up leftbrace = h,e,$clear
+key up a = n,o,$clear
+key up r = t,o,$clear
+key up t = k,a,$clear
+key up d = k,o,$clear
+key up h = k,u,$clear
+key up n = u,$clear
+key up o = n,a,$clear
+key up apostrophe = h,i,$clear
+key up z = s,u,$clear
+key up x = h,a,$clear
+key up c = n,i,$clear
+key up v = d,e,$clear
+key up b = s,a,$clear
+key up k = m,a,$clear
+key up m = r,u,$clear
+key up comma = k,i,$clear
+key up dot = m,o,$clear
+key up slash = minus,$clear
 
 lock shift1 {
+  key up s = &lock(shift1)
 
-  key down w = d,u,&clear
-  key down p = v,u,&clear
-  key down g = d,i,&clear
-  key down r = leftbrace,&clear
-  key down t = comma,&clear
-  key down d = slash,&clear
+  key down w = d,u
+  key down p = v,u
+  key down g = d,i
+  key down r = leftbrace
+  key down t = comma
+  key down d = slash
 
-  key down j = g,u,&clear
-  key down l = t,i,&clear
-  key down u = x,y,u,&clear
-  key down y = s,e,&clear
-  key down semicolon = m,e,&clear
+  key down j = g,u
+  key down l = t,i
+  key down u = x,y,u
+  key down y = s,e
+  key down semicolon = m,e
 
-  key down h = m,u,&clear
-  key down n = r,a,&clear
-  key down e = r,i,&clear
-  key down i = m,i,&clear
-  key down o = s,o,&clear
+  key down h = m,u
+  key down n = r,a
+  key down e = r,i
+  key down i = m,i
+  key down o = s,o
 
-  key down k = x,y,a,&clear
-  key down m = h,u,&clear
-  key down comma = y,a,&clear
-  key down dot = b,e,&clear
-  key down slash = b,i,&clear
+  key down k = x,y,a
+  key down m = h,u
+  key down comma = y,a
+  key down dot = b,e
+  key down slash = b,i
+
+  key up w = d,u,$clear
+  key up p = v,u,$clear
+  key up g = d,i,$clear
+  key up r = leftbrace,$clear
+  key up t = comma,$clear
+  key up d = slash,$clear
+
+  key up j = g,u,$clear
+  key up l = t,i,$clear
+  key up u = x,y,u,$clear
+  key up y = s,e,$clear
+  key up semicolon = m,e,$clear
+
+  key up h = m,u,$clear
+  key up n = r,a,$clear
+  key up e = r,i,$clear
+  key up i = m,i,$clear
+  key up o = s,o,$clear
+
+  key up k = x,y,a,$clear
+  key up m = h,u,$clear
+  key up comma = y,a,$clear
+  key up dot = b,e,$clear
+  key up slash = b,i,$clear
 }
 
 lock shift2 {
+  key up e = &lock(shift2)
 
-  key down q = n,u,&clear
-  key down w = g,o,&clear
-  key down f = r,e,&clear
-  key down p = y,o,&clear
-  key down g = b,o,&clear
-  key down l = x,a,&clear
-  key down y = x,i,&clear
+  key down q = n,u
+  key down w = g,o
+  key down f = r,e
+  key down p = y,o
+  key down g = b,o
+  key down l = x,a
+  key down y = x,i
 
-  key down a = e,&clear
-  key down r = a,&clear
-  key down s = o,&clear
-  key down t = g,a,&clear
-  key down d = w,o,&clear
-  key down n = dot,&clear
-  key down i = rightbrace,&clear
+  key down a = e
+  key down r = a
+  key down s = o
+  key down t = g,a
+  key down d = w,o
+  key down n = dot
+  key down i = rightbrace
 
-  key down z = y,u,&clear
-  key down x = n,e,&clear
-  key down c = g,e,&clear
-  key down v = h,o,&clear
-  key down b = r,o,&clear
-  key down k = x,u,&clear
-  key down m = x,e,&clear
-  key down dot = x,o,&clear
+  key down z = y,u
+  key down x = n,e
+  key down c = g,e
+  key down v = h,o
+  key down b = r,o
+  key down k = x,u
+  key down m = x,e
+  key down dot = x,o
+
+  key up q = n,u,$clear
+  key up w = g,o,$clear
+  key up f = r,e,$clear
+  key up p = y,o,$clear
+  key up g = b,o,$clear
+  key up l = x,a,$clear
+  key up y = x,i,$clear
+
+  key up a = e,$clear
+  key up r = a,$clear
+  key up s = o,$clear
+  key up t = g,a,$clear
+  key up d = w,o,$clear
+  key up n = dot,$clear
+  key up i = rightbrace,$clear
+
+  key up z = y,u,$clear
+  key up x = n,e,$clear
+  key up c = g,e,$clear
+  key up v = h,o,$clear
+  key up b = r,o,$clear
+  key up k = x,u,$clear
+  key up m = x,e,$clear
+  key up dot = x,o,$clear
 }
 
 lock shift3 {
-  key down q = z,a,&clear
-  key down w = g,i,&clear
-  key down f = z,u,&clear
-  key down p = z,e,&clear
-  key down g = z,o,&clear
-  
-  key down b = b,a,&clear
-  key down r = z,i,&clear
-  key down s = d,o,&clear
-  key down t = d,a,&clear
-  key down d = b,u,&clear
+  key up i = &lock(shift3)
 
-  key down z = p,a,&clear
-  key down x = p,i,&clear
-  key down c = p,u,&clear
-  key down v = p,e,&clear
-  key down b = p,o,&clear
+  key down q = z,a
+  key down w = g,i
+  key down f = z,u
+  key down p = z,e
+  key down g = z,o
+  
+  key down b = b,a
+  key down r = z,i
+  key down s = d,o
+  key down t = d,a
+  key down d = b,u
+
+  key down z = p,a
+  key down x = p,i
+  key down c = p,u
+  key down v = p,e
+  key down b = p,o
+
+  key up q = z,a,$clear
+  key up w = g,i,$clear
+  key up f = z,u,$clear
+  key up p = z,e,$clear
+  key up g = z,o,$clear
+  
+  key up b = b,a,$clear
+  key up r = z,i,$clear
+  key up s = d,o,$clear
+  key up t = d,a,$clear
+  key up d = b,u,$clear
+
+  key up z = p,a,$clear
+  key up x = p,i,$clear
+  key up c = p,u,$clear
+  key up v = p,e,$clear
+  key up b = p,o,$clear
 }
