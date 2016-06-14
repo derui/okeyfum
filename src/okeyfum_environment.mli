@@ -28,3 +28,12 @@ val disable_converter: t -> t
 
 val is_enable: t -> bool
 (* [is_enable env] get current state for enabling converter. *)
+
+val meta_key_press: env:t -> meta_key:Okeyfum_types.Meta_key.t -> t
+(* [meta_key_press ~env ~meta_key] change status as pressed the meta_key. *)
+
+val meta_key_release: env:t -> meta_key:Okeyfum_types.Meta_key.t -> t
+(* [meta_key_release ~env ~meta_key] change status as released the meta_key. *)
+
+val is_any_meta_key_pressed: t -> bool
+(* [is_any_meta_key_pressed env] return any meta key is pressed or not. *)

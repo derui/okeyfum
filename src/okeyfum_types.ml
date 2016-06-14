@@ -169,3 +169,53 @@ type conversion_result =
     To_eval of expanded_key list
   | No_def of expanded_key list
   | Not_key of expanded_key list
+
+module Meta_key = struct
+  type status = int
+  type t =
+    Left_ctrl of int
+  | Right_ctrl of int
+  | Left_shift of int
+  | Right_shift of int
+  | Left_alt of int
+  | Right_alt of int
+  | Left_super of int
+  | Right_super of int
+
+  let empty_status = 0
+  let is_any_pressed key = key = 0
+
+  let key_to_meta key =
+    match key with
+    | _ when key = T.Key.key_leftctrl -> Some(Left_ctrl 1)
+    | _ when key = T.Key.key_rightctrl -> Some(Right_ctrl 2)
+    | _ when key = T.Key.key_leftshift -> Some(Left_shift 4)
+    | _ when key = T.Key.key_rightshift -> Some(Right_shift 8)
+    | _ when key = T.Key.key_leftalt -> Some(Left_alt 16)
+    | _ when key = T.Key.key_rightalt -> Some(Right_alt 32)
+    | _ when key = T.Key.key_leftmeta -> Some(Left_super 64)
+    | _ when key = T.Key.key_rightmeta -> Some(Right_super 128)
+    | _ -> None
+
+  let press ~state ~key =
+    match key with
+    | Left_ctrl k -> state lor k 
+    | Right_ctrl k -> state lor k 
+    | Left_shift k -> state lor k 
+    | Right_shift k -> state lor k 
+    | Left_alt k -> state lor k 
+    | Right_alt k -> state lor k 
+    | Left_super k -> state lor k 
+    | Right_super k -> state lor k 
+
+  let release ~state ~key =
+    match key with
+    | Left_ctrl k -> state land (lnot k)
+    | Right_ctrl k -> state land (lnot k)
+    | Left_shift k -> state land (lnot k)
+    | Right_shift k -> state land (lnot k)
+    | Left_alt k -> state land (lnot k)
+    | Right_alt k -> state land (lnot k)
+    | Left_super k -> state land (lnot k)
+    | Right_super k -> state land (lnot k)
+end
