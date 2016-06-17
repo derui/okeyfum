@@ -10,14 +10,13 @@ module GT = Okeyfum_ffi_bindings.Types(Okeyfum_ffi_generated_types)
 let rec expand_key config state = function
   | `Id k -> begin
     match K.key_name_to_code k with
-    | Some c -> [T.Key (
-      {IE.code = c;
-       time = T.Timeval.empty;
-       value = (match state with
-       | `DOWN -> 1L
-       | `UP -> 0L);
-       typ = GT.Event_type.ev_key;
-      })]
+    | Some c -> let k_d = {IE.code = c;
+                           time = T.Timeval.empty;
+                           value = 1L;
+                           typ = GT.Event_type.ev_key;
+                          } in
+                let k_u = {k_d with IE.value = 0L} in
+                [T.Key k_d;T.Key k_u]
     | None -> let module L = Okeyfum_log in
               L.error (Printf.sprintf "Not defined key name : %s" k);
               raise Not_found

@@ -188,7 +188,7 @@ lock shift3 {
   key down p = z,e
   key down g = z,o
   
-  key down b = b,a
+  key down a = b,a
   key down r = z,i
   key down s = d,o
   key down t = d,a
@@ -206,7 +206,7 @@ lock shift3 {
   key up p = z,e,$clear
   key up g = z,o,$clear
   
-  key up b = b,a,$clear
+  key up a = b,a,$clear
   key up r = z,i,$clear
   key up s = d,o,$clear
   key up t = d,a,$clear

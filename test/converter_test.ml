@@ -30,12 +30,14 @@
                    time = Okeyfum_types.Timeval.empty;
                   } in
       let b = let module E = Okeyfum_types.Input_event in
-              {base with E.code = Okeyfum_key.key_name_to_code "b" |> Okeyfum_util.option_get}
-      and v = let module E = Okeyfum_types.Input_event in
+              {base with E.code = Okeyfum_key.key_name_to_code "b" |> Okeyfum_util.option_get} in
+      let b' = let module E = Okeyfum_types.Input_event in {b with E.value = 0L} in
+      let v = let module E = Okeyfum_types.Input_event in
               {base with E.code = Okeyfum_key.key_name_to_code "v" |> Okeyfum_util.option_get} in
+      let v' = let module E = Okeyfum_types.Input_event in {v with E.value = 0L} in
       let keys = C.convert_event_to_seq ~config ~env ~event:base in
       let module T = Okeyfum_types in
-      keys [@eq T.To_eval [T.Key v;T.Key b]]
+      keys [@eq T.To_eval [T.Key v;T.Key v';T.Key b;T.Key b']]
    | None -> false [@false "Loading failure"]
 
  let%spec "OKeyfum key converter should return key sequence expanded with state" =
@@ -51,12 +53,16 @@
                    time = Okeyfum_types.Timeval.empty;
                   } in
       let b = let module E = Okeyfum_types.Input_event in
-              {base with E.code = Okeyfum_key.key_name_to_code "b" |> Okeyfum_util.option_get}
-      and v = let module E = Okeyfum_types.Input_event in
-              {base with E.code = Okeyfum_key.key_name_to_code "v" |> Okeyfum_util.option_get} in
+              {base with E.code = Okeyfum_key.key_name_to_code "b" |> Okeyfum_util.option_get;
+                value = 1L} in
+      let b' = let module E = Okeyfum_types.Input_event in {b with E.value = 0L} in
+      let v = let module E = Okeyfum_types.Input_event in
+              {base with E.code = Okeyfum_key.key_name_to_code "v" |> Okeyfum_util.option_get;
+                value = 1L;} in
+      let v' = let module E = Okeyfum_types.Input_event in {v with E.value = 0L} in
       let keys = C.convert_event_to_seq ~config ~env ~event:base in
       let module T = Okeyfum_types in
-      keys [@eq T.To_eval [T.Key b;T.Key v]]
+      keys [@eq T.To_eval [T.Key b;T.Key b';T.Key v;T.Key v']]
    | None -> false [@false "Loading failure"]
 
  let%spec "OKeyfum key converter should be able to expand variable" =
@@ -71,16 +77,25 @@
                    value = 1L;
                    time = Okeyfum_types.Timeval.empty;
                   } in
-      let key_to_ev k =
+      let key_to_ev k v =
         let module E = Okeyfum_types.Input_event in
-        {base with E.code = Okeyfum_key.key_name_to_code k |> Okeyfum_util.option_get} in
-      let a = key_to_ev "a" 
-      and b = key_to_ev "b" 
-      and c = key_to_ev "c" 
-      and d = key_to_ev "d" in
+        {base with E.code = Okeyfum_key.key_name_to_code k |> Okeyfum_util.option_get;
+          value = v} in
+      let a = key_to_ev "a" 1L
+      and b = key_to_ev "b" 1L
+      and c = key_to_ev "c" 1L
+      and d = key_to_ev "d" 1L in
+      let a' = key_to_ev "a" 0L
+      and b' = key_to_ev "b" 0L
+      and c' = key_to_ev "c" 0L
+      and d' = key_to_ev "d" 0L in
       let keys = C.convert_event_to_seq ~config ~env ~event:base in
       let module T = Okeyfum_types in
-      keys [@eq T.To_eval [T.Key a;T.Key b; T.Key c;T.Key d;T.Key c]]
+      keys [@eq T.To_eval [T.Key a;T.Key a';
+                           T.Key b;T.Key b';
+                           T.Key c;T.Key c';
+                           T.Key d;T.Key d';
+                           T.Key c;T.Key c']]
    | None -> false [@false "Loading failure"]
 
  let%spec "OKeyfum key converter should be able to expand pre-defined function" =
@@ -113,13 +128,14 @@
                    value = 0L;
                    time = Okeyfum_types.Timeval.empty;
                   } in
-      let key_to_ev k =
+      let key_to_ev k v =
         let module E = Okeyfum_types.Input_event in
-        {base with E.code = Okeyfum_key.key_name_to_code k |> Okeyfum_util.option_get} in
-      let c = key_to_ev "c" in
+        {base with E.code = Okeyfum_key.key_name_to_code k |> Okeyfum_util.option_get;value = v} in
+      let c = key_to_ev "c" 1L in
+      let c' = key_to_ev "c" 0L in
       let keys = C.convert_event_to_seq ~config ~env ~event:base in
       let module T = Okeyfum_types in
-      keys [@eq T.To_eval [T.Key c]]
+      keys [@eq T.To_eval [T.Key c;T.Key c']]
    | None -> false [@false "Loading failure"]
 
  let%spec "OKeyfum key converter should resolve function key" =
