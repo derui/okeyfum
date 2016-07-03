@@ -4,7 +4,7 @@
 %}
 
 (* punctuators *)
-%token LCBRACE RCBRACE EQ COMMA LPAREN RPAREN AND
+%token LCBRACE RCBRACE EQ COMMA LPAREN RPAREN LOGAND
 
 (* keyword *)
 %token KEYWORD_DEFLOCK
@@ -60,7 +60,7 @@ EOF {None}
   ;
 
   lock_statement:
-    KEYWORD_LOCK identifier LCBRACE list(key_statement) RCBRACE { Config_type.Cstm_lock ($2, $4)}
+    KEYWORD_LOCK separated_nonempty_list(LOGAND, identifier) LCBRACE list(key_statement) RCBRACE { Config_type.Cstm_lock ($2, $4)}
   ;
 
   defvar_statement:

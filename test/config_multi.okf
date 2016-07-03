@@ -1,0 +1,20 @@
+# sample comment
+key up sample = v, b
+key down sample = v, b
+key up a = b, v
+key down a = v, b
+
+key down b = $var_name, c
+
+key up d = $a, &fun(b)
+key up e = &fun(c)
+key down f12 = &enable()
+
+deflock b
+deflock a
+
+defvar $var_name = a,b,c,d
+
+lock b && a {
+  key up a = c
+}

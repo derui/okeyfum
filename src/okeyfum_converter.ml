@@ -41,13 +41,19 @@ let is_not_key_event {IE.typ=typ;_} = typ <> GT.Event_type.ev_key
 let resolve_key_map config env event =
   let key = U.event_to_key_of_map event in
   let key_map = match E.locked_keys env with
-    | [] -> C.keydef_map config
-    | k :: _ -> C.lock_decls config |> List.filter (fun (k', _) -> k = k') |> List.hd |> snd
+    | [] -> Some (C.keydef_map config)
+    | keys -> let module S = Okeyfum_config.Lock_set in
+              let locked_keys = S.of_list keys in
+              let decls = C.lock_decls config in
+              let decls = List.find_all (fun (set, _) -> S.equal set locked_keys) decls in
+              match decls with
+              | [] -> None
+              | (_, map) :: _ -> Some map
   in
   let module M = Okeyfum_config.Keydef_map in
-  match key with
-  | None -> None
-  | Some key -> begin
+  match key, key_map with
+  | None, _ | Some _, None-> None
+  | Some key, Some key_map -> begin
     match try Some (M.find key key_map) with Not_found -> None with
     | None -> let module L = Okeyfum_log in
               let key, _  = key in

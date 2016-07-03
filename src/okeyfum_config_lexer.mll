@@ -34,6 +34,7 @@ rule token = parse
   | ')' { RPAREN }
   | '=' { EQ }
   | ',' { COMMA }
+  | "&&" { LOGAND }
   | reserved_word { to_keyword (Lexing.lexeme lexbuf)}
   | identifier_start (identifier_start | ['0'-'9'])* as ident {IDENT(ident)}
   | variable_start (identifier_start | ['0'-'9'])* as ident {VARIABLE(ident)}

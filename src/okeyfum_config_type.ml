@@ -5,7 +5,7 @@ type main =
 and statement =
     Cstm_key of expression * T.state * expression list
   | Cstm_deflock of expression
-  | Cstm_lock of expression * statement list
+  | Cstm_lock of expression list * statement list
   | Cstm_defvar of expression * expression list
 and expression =
     Cexp_var of string

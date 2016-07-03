@@ -26,7 +26,7 @@
    let conf = Okeyfum_config.load "./config.okf" in
    match conf with
    | Some c -> begin
-     let dec = List.assoc "b" Okeyfum_config.(Config.lock_decls c) in
+     let dec = List.hd Okeyfum_config.(Config.lock_decls c) |> snd in
      let module M = Okeyfum_config.Keydef_map in
      Okeyfum_config.(M.find ("a", `UP) dec) [@eq [`Id "c"]]
    end

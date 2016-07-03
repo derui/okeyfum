@@ -12,15 +12,17 @@ let protect ~f ~finally =
     raise e;
   end
 
+let is_some = function
+  | Some _ -> true
+  | None -> false
+     
 let option_get = function
   | Some s -> s
   | None -> failwith "None to get something"
 
 module T = Okeyfum_types
 module IE = Okeyfum_types.Input_event
-module E = Okeyfum_environment
 module K = Okeyfum_key
-module C = Okeyfum_config.Config
 
 module GT = Okeyfum_ffi_bindings.Types(Okeyfum_ffi_generated_types)
 let event_to_state {IE.value=value;_} = match value with

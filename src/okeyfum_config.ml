@@ -7,6 +7,11 @@ module Config_type = Okeyfum_config_type
 module Config_parser = Okeyfum_config_parser
 module Config_lexer = Okeyfum_config_lexer
 
+module Lock_set = Set.Make(struct
+  type t = string
+  let compare = Pervasives.compare
+end)
+
 module Keydef_map = Map.Make(struct
   type t = string * T.state
   let compare (aa, ab) (ba, bb) =
@@ -37,7 +42,7 @@ module Config : sig
   type keydef_map = key list Keydef_map.t
 
   (* The type of key-sequences when a lock key is locked *)
-  type lock_decl = string * keydef_map
+  type lock_decl = Lock_set.t * keydef_map
 
   (* The type of configuration *)
   type t
@@ -63,7 +68,7 @@ end = struct
   type key = [`Var of string | `Id of string | `Func of string * string list]
 
   type keydef_map = key list Keydef_map.t
-  type lock_decl = string * keydef_map
+  type lock_decl = Lock_set.t * keydef_map
 
   type t = {
     variable_map: (string, key list) Hashtbl.t;
@@ -91,9 +96,14 @@ end = struct
 
   (* convert statement to lock declaration *)
   let stmt_to_decl = function
-    | Config_type.Cstm_lock (Config_type.Cexp_ident lock_name, seqs) ->
+    | Config_type.Cstm_lock (lock_names, seqs) ->
        let m = Keydef_map.empty in
-       (lock_name, List.fold_left stmt_to_sequence m  seqs)
+       let lock_names = List.map (function
+         | Config_type.Cexp_ident name -> Some name
+         | _ -> None) lock_names in
+       let lock_names = List.filter Okeyfum_util.is_some lock_names in
+       let lock_names = List.map Okeyfum_util.option_get lock_names in
+       (Lock_set.of_list lock_names, List.fold_left stmt_to_sequence m seqs)
     | _ -> failwith "Lock declaration only"
 
   (* convert statement to lock key definition *)

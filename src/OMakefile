@@ -28,6 +28,7 @@ BYTE_ENABLED = true
 #
 # Various options
 #
+MENHIR_FLAGS  += --infer
 OCAMLFLAGS    += 
 OCAMLCFLAGS   +=
 OCAMLOPTFLAGS += -warn-error -58
