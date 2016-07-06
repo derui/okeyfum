@@ -7,6 +7,7 @@ and statement =
   | Cstm_deflock of expression
   | Cstm_lock of expression list * statement list
   | Cstm_defvar of expression * expression list
+  | Cstm_default of T.state * expression list
 and expression =
     Cexp_var of string
   | Cexp_ident of string

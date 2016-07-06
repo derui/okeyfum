@@ -15,7 +15,7 @@ let protect ~f ~finally =
 let is_some = function
   | Some _ -> true
   | None -> false
-     
+
 let option_get = function
   | Some s -> s
   | None -> failwith "None to get something"

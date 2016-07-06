@@ -36,7 +36,11 @@ let parse_with_error lexbuf =
 
 module Config : sig
   (* The type of key sequence *)
-  type key = [`Var of string | `Id of string | `Func of string * string list]
+  type key = [
+    `Var of string
+  | `Id of string
+  | `Func of string * string list
+  ]
 
   (* The type of key-sequences related key name and state *)
   type keydef_map = key list Keydef_map.t
@@ -59,13 +63,20 @@ module Config : sig
   val keydef_map : t -> keydef_map
   (* [keydef_map t] get the key definition that is key sequence of [t] *)
 
+  val wildcard_key : string
+  (* [wildcard_key] is the key for wildcard key definition *)
+
   val empty : t
   val make : Config_type.main -> t
 (* [make prog] create the new configuration from tree of configuration DSL *)
 
 end = struct
 
-  type key = [`Var of string | `Id of string | `Func of string * string list]
+  type key = [
+    `Var of string
+  | `Id of string
+  | `Func of string * string list
+  ]
 
   type keydef_map = key list Keydef_map.t
   type lock_decl = Lock_set.t * keydef_map
@@ -76,6 +87,8 @@ end = struct
     lock_defs: string list;
     keydef_map: keydef_map; (* key-definition map *)
   }
+
+  let wildcard_key = "*"
 
   let variable_map {variable_map;_} = variable_map
   let lock_decls {lock_decls;_} = lock_decls
@@ -92,6 +105,8 @@ end = struct
   let stmt_to_sequence map = function
     | Config_type.Cstm_key (Config_type.Cexp_ident key, state, seqs) ->
        Keydef_map.add (key, state) (List.map exp_to_key seqs) map
+    | Config_type.Cstm_default (state, seqs) ->
+       Keydef_map.add (wildcard_key, state) (List.map exp_to_key seqs) map
     | _ -> failwith "Only key definition to be able to convert sequence"
 
   (* convert statement to lock declaration *)
@@ -128,7 +143,7 @@ end = struct
       | Config_type.Cstm_lock _ -> build_statement {config with
         lock_decls = (stmt_to_decl stmt) :: config.lock_decls
       } rest
-      | Config_type.Cstm_key _ ->
+      | Config_type.Cstm_key _ | Config_type.Cstm_default _ ->
          let keydef_map' = stmt_to_sequence config.keydef_map stmt in
          build_statement {config with keydef_map = keydef_map'} rest
       | Config_type.Cstm_deflock _ ->

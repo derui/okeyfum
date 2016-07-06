@@ -14,13 +14,14 @@
     | "key"  ->  KEYWORD_KEY
     | "up"  ->  KEYWORD_UP
     | "down"  ->  KEYWORD_DOWN
+    | "default"  ->  KEYWORD_DEFAULT
     | s -> failwith ("Unknown keyword: " ^ s)
 }
 let line_terminator = ['\n' '\r'] | "\r\n"
 let white_space = [' ' '\t' '\x0b' '\x0c' '\xa0']
 let variable_start = '$'
 let identifier_start = ['a'-'z' 'A'-'Z'] | '_'
-let reserved_word = "deflock" | "defvar" | "lock" | "key" | "up" | "down"
+let reserved_word = "deflock" | "defvar" | "lock" | "key" | "up" | "down" | "default"
 
 (* Parsing rule for config *)
 rule token = parse

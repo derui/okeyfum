@@ -7,7 +7,7 @@
 %token LCBRACE RCBRACE EQ COMMA LPAREN RPAREN LOGAND
 
 (* keyword *)
-%token KEYWORD_DEFLOCK
+%token KEYWORD_DEFLOCK KEYWORD_DEFAULT
 %token KEYWORD_LOCK KEYWORD_DEFVAR KEYWORD_KEY KEYWORD_UP KEYWORD_DOWN
 
 (* %token <string> WHITE_SPACE *)
@@ -40,10 +40,15 @@ EOF {None}
    |deflock_statement { $1 }
    |lock_statement { $1 }
    |defvar_statement { $1 }
+   |default_statement { $1 }
   ;
 
   key_statement:
     KEYWORD_KEY key_state identifier EQ key_sequences {Config_type.Cstm_key ($3, $2, $5)}
+  ;
+
+  default_statement:
+    KEYWORD_DEFAULT key_state EQ key_sequences {Config_type.Cstm_default ($2, $4)}
   ;
 
   key_state:
@@ -69,7 +74,7 @@ EOF {None}
 
   (* Key sequence grammer*)
   key_sequences:
-    separated_nonempty_list(COMMA, key_sequence) { $1 }
+    separated_list(COMMA, key_sequence) { $1 }
   ;
 
   key_sequence:

@@ -37,8 +37,26 @@ and expand_key_seq config state seq =
 
 let is_not_key_event {IE.typ=typ;_} = typ <> GT.Event_type.ev_key
 
+let resolve_key_seq config map key =
+  let module M = Okeyfum_config.Keydef_map in
+  let module C =  Okeyfum_config.Config in
+  let seq =
+    (* If already defined some default key sequense, use it. *)
+    match try Some (M.find key map) with Not_found -> None with
+    | None -> (try Some (M.find (C.wildcard_key, (snd key)) map) with Not_found -> None)
+    | Some _ as k -> k
+  in
+
+  match seq with
+  | None -> let module L = Okeyfum_log in
+            let key', state  = key in
+            L.info (Printf.sprintf "Not found defined key sequence for : %s" key');
+            None
+  | Some seq -> Some (expand_key_seq config (snd key) seq)
+
 (* resolve key event to key sequence to evalate with environment and config *)
-let resolve_key_map config env event =
+let expand_event config env event =
+  let module M = Okeyfum_config.Keydef_map in
   let key = U.event_to_key_of_map event in
   let key_map = match E.locked_keys env with
     | [] -> Some (C.keydef_map config)
@@ -50,22 +68,14 @@ let resolve_key_map config env event =
               | [] -> None
               | (_, map) :: _ -> Some map
   in
-  let module M = Okeyfum_config.Keydef_map in
   match key, key_map with
-  | None, _ | Some _, None-> None
-  | Some key, Some key_map -> begin
-    match try Some (M.find key key_map) with Not_found -> None with
-    | None -> let module L = Okeyfum_log in
-              let key, _  = key in
-              L.debug (Printf.sprintf "Not found defined key sequence for : %s" key);
-              None
-    | Some seq -> let _, state = key in Some (expand_key_seq config state seq)
-  end
+  | None, _ | Some _, None -> None
+  | Some key, Some key_map -> resolve_key_seq config key_map key
 
 let convert_event_to_seq ~config ~env ~event =
   let default_seq = [T.Key event] in
   if is_not_key_event event then T.Not_key default_seq
   else
-    match resolve_key_map config env event with
+    match expand_event config env event with
     | None -> T.No_def default_seq
     | Some seq -> T.To_eval seq

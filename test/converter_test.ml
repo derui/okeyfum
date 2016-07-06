@@ -177,4 +177,30 @@
       let module T = Okeyfum_types in
       keys [@eq T.To_eval [T.Key c;T.Key c']]
    | None -> false [@false "Loading failure"]
+
+ let%spec "OKeyfum key converter should resolve default key sequence" =
+   match Okeyfum_config.load "./config_default.okf" with
+   | Some config ->
+      let env = Okeyfum_environment.make config in
+      let env = Okeyfum_environment.enable_converter env in
+      let module C = Okeyfum_converter in
+      let base = let module E = Okeyfum_types.Input_event in
+                  {E.typ = GT.Event_type.ev_key;
+                   code = Okeyfum_key.key_name_to_code "a" |> Okeyfum_util.option_get;
+                   value = 1L;
+                   time = Okeyfum_types.Timeval.empty;
+                  } in
+      let key_to_ev k v =
+        let module E = Okeyfum_types.Input_event in
+        {base with E.code = Okeyfum_key.key_name_to_code k |> Okeyfum_util.option_get;value = v} in
+      let a = key_to_ev "a" 0L in
+      let c = key_to_ev "c" 1L in
+      let c' = key_to_ev "c" 0L in
+      let b = key_to_ev "b" 1L in
+      let keys = C.convert_event_to_seq ~config ~env ~event:a in
+      let module T = Okeyfum_types in
+      keys [@eq T.To_eval [T.Key c;T.Key c']];
+      let keys = C.convert_event_to_seq ~config ~env ~event:b in
+      keys [@eq T.No_def [T.Key b]]
+   | None -> false [@false "Loading failure"]
 ]
