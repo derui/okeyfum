@@ -183,7 +183,7 @@ module Meta_key = struct
   | Right_super of int
 
   let empty_status = 0
-  let is_any_pressed key = key = 0
+  let is_any_pressed key = key <> 0
 
   let key_to_meta key =
     match key with

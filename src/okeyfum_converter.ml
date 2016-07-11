@@ -38,18 +38,20 @@ and expand_key_seq config state seq =
 let is_not_key_event {IE.typ=typ;_} = typ <> GT.Event_type.ev_key
 
 let resolve_key_seq config map key =
+  let module L = Okeyfum_log in
   let module M = Okeyfum_config.Keydef_map in
   let module C =  Okeyfum_config.Config in
   let seq =
     (* If already defined some default key sequense, use it. *)
     match try Some (M.find key map) with Not_found -> None with
-    | None -> (try Some (M.find (C.wildcard_key, (snd key)) map) with Not_found -> None)
+    | None ->
+       L.debug (Printf.sprintf "Not found but search of default");
+      (try Some (M.find (C.wildcard_key, (snd key)) map) with Not_found -> None)
     | Some _ as k -> k
   in
 
   match seq with
-  | None -> let module L = Okeyfum_log in
-            let key', state  = key in
+  | None -> let key', state  = key in
             L.info (Printf.sprintf "Not found defined key sequence for : %s" key');
             None
   | Some seq -> Some (expand_key_seq config (snd key) seq)

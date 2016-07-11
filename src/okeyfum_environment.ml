@@ -37,4 +37,4 @@ let meta_key_release ~env ~meta_key =
   let module T = Okeyfum_types.Meta_key in
   {env with meta_key_status = T.release ~state:env.meta_key_status ~key:meta_key}
 
-let is_any_meta_key_pressed env = not (T.Meta_key.is_any_pressed env.meta_key_status)
+let is_any_meta_key_pressed env = T.Meta_key.is_any_pressed env.meta_key_status

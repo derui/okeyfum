@@ -40,15 +40,11 @@ EOF {None}
    |deflock_statement { $1 }
    |lock_statement { $1 }
    |defvar_statement { $1 }
-   |default_statement { $1 }
   ;
 
   key_statement:
     KEYWORD_KEY key_state identifier EQ key_sequences {Config_type.Cstm_key ($3, $2, $5)}
-  ;
-
-  default_statement:
-    KEYWORD_DEFAULT key_state EQ key_sequences {Config_type.Cstm_default ($2, $4)}
+    |KEYWORD_DEFAULT key_state EQ key_sequences {Config_type.Cstm_default ($2, $4)}
   ;
 
   key_state:
