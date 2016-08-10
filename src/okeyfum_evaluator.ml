@@ -49,6 +49,13 @@ let invoke_function env = function
          Ok (E.disable_converter env) 
       | _ -> Error "the number of arguments of 'disable' function must be 0"
     end
+    | "&switch" -> begin match param with
+      | [] ->
+         L.info "Okeyfum converter enabled";
+         if E.is_enable env then (Ok (E.disable_converter env))
+           else (Ok (E.enable_converter env))
+      | _ -> Error "the number of arguments of 'switch' function must be 0"
+    end
     | _ -> Error (Printf.sprintf "the function `%s` is not defined" fname)
   end
 

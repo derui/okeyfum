@@ -74,6 +74,7 @@ let key_name_map =
   Hashtbl.add tbl "f10" T.Key.key_f10;
   Hashtbl.add tbl "numlock" T.Key.key_numlock;
   Hashtbl.add tbl "scrolllock" T.Key.key_scrolllock;
+  Hashtbl.add tbl "compose" T.Key.key_compose;
   Hashtbl.add tbl "kp7" T.Key.key_kp7;
   Hashtbl.add tbl "kp8" T.Key.key_kp8;
   Hashtbl.add tbl "kp9" T.Key.key_kp9;
