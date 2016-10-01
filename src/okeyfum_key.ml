@@ -139,6 +139,9 @@ let key_name_map =
   Hashtbl.add tbl "f22" T.Key.key_f22;
   Hashtbl.add tbl "f23" T.Key.key_f23;
   Hashtbl.add tbl "f24" T.Key.key_f24;
+  Hashtbl.add tbl "hangeul" T.Key.key_hangeul;
+  Hashtbl.add tbl "hanguel" T.Key.key_hanguel;
+  Hashtbl.add tbl "hanja" T.Key.key_hanja;
   tbl
 
 let key_code_map =
