@@ -1,0 +1,2362 @@
+key up hanguel = hanguel,&enable()
+key up hanja = hanja,&disable()
+
+# 新下駄配列
+deflock l1
+deflock l2
+deflock l3
+deflock l4
+deflock l5
+deflock l6
+
+defvar $clear       = &unlock(l1),&unlock(l2),&unlock(l3),&unlock(l4),&unlock(l5),&unlock(l6)
+# 各キーのロック状態を表す。l1〜6は、それぞれbitの位置に対応し、6bit = 64種類のlockを定義できる
+defvar $L_q         = &unlock(l6) ,&unlock(l5),&unlock(l4),&unlock(l3),&unlock(l2),&lock(l1)
+defvar $L_w         = &unlock(l6) ,&unlock(l5),&unlock(l4),&unlock(l3),&lock(l2),&unlock(l1)
+defvar $L_e         = &unlock(l6) ,&unlock(l5),&unlock(l4),&unlock(l3),&lock(l2),&lock(l1)
+defvar $L_r         = &unlock(l6) ,&unlock(l5),&unlock(l4),&lock(l3),&unlock(l2),&unlock(l1)
+defvar $L_t         = &unlock(l6) ,&unlock(l5),&unlock(l4),&lock(l3),&unlock(l2),&lock(l1)
+defvar $L_y         = &unlock(l6) ,&unlock(l5),&unlock(l4),&lock(l3),&lock(l2),&unlock(l1)
+defvar $L_u         = &unlock(l6) ,&unlock(l5),&unlock(l4),&lock(l3),&lock(l2),&lock(l1)
+defvar $L_i         = &unlock(l6) ,&unlock(l5),&lock(l4),&unlock(l3),&unlock(l2),&unlock(l1)
+defvar $L_o         = &unlock(l6) ,&unlock(l5),&lock(l4),&unlock(l3),&unlock(l2),&lock(l1)
+defvar $L_p         = &unlock(l6) ,&unlock(l5),&lock(l4),&unlock(l3),&lock(l2),&unlock(l1)
+defvar $L_leftbrace        = &unlock(l6) ,&unlock(l5),&lock(l4),&unlock(l3),&lock(l2),&lock(l1)
+defvar $L_a         = &unlock(l6) ,&unlock(l5),&lock(l4),&lock(l3),&unlock(l2),&unlock(l1)
+defvar $L_s         = &unlock(l6) ,&unlock(l5),&lock(l4),&lock(l3),&unlock(l2),&lock(l1)
+defvar $L_d         = &unlock(l6) ,&unlock(l5),&lock(l4),&lock(l3),&lock(l2),&unlock(l1)
+defvar $L_f         = &unlock(l6) ,&unlock(l5),&lock(l4),&lock(l3),&lock(l2),&lock(l1)
+defvar $L_g         = &unlock(l6) ,&lock(l5),&unlock(l4),&unlock(l3),&unlock(l2),&unlock(l1)
+defvar $L_h         = &unlock(l6) ,&lock(l5),&unlock(l4),&unlock(l3),&unlock(l2),&lock(l1)
+defvar $L_j         = &unlock(l6) ,&lock(l5),&unlock(l4),&unlock(l3),&lock(l2),&unlock(l1)
+defvar $L_k         = &unlock(l6) ,&lock(l5),&unlock(l4),&unlock(l3),&lock(l2),&lock(l1)
+defvar $L_l         = &unlock(l6) ,&lock(l5),&unlock(l4),&lock(l3),&unlock(l2),&unlock(l1)
+defvar $L_semicolon = &unlock(l6) ,&lock(l5),&unlock(l4),&lock(l3),&unlock(l2),&lock(l1)
+defvar $L_z         = &unlock(l6) ,&lock(l5),&unlock(l4),&lock(l3),&lock(l2),&unlock(l1)
+defvar $L_x         = &unlock(l6) ,&lock(l5),&unlock(l4),&lock(l3),&lock(l2),&lock(l1)
+defvar $L_c         = &unlock(l6) ,&lock(l5),&lock(l4),&unlock(l3),&unlock(l2),&unlock(l1)
+defvar $L_v         = &unlock(l6) ,&lock(l5),&lock(l4),&unlock(l3),&unlock(l2),&lock(l1)
+defvar $L_b         = &unlock(l6) ,&lock(l5),&lock(l4),&unlock(l3),&lock(l2),&unlock(l1)
+defvar $L_n         = &unlock(l6) ,&lock(l5),&lock(l4),&unlock(l3),&lock(l2),&lock(l1)
+defvar $L_m         = &unlock(l6) ,&lock(l5),&lock(l4),&lock(l3),&unlock(l2),&unlock(l1)
+defvar $L_comma     = &unlock(l6) ,&lock(l5),&lock(l4),&lock(l3),&unlock(l2),&lock(l1)
+defvar $L_dot       = &unlock(l6) ,&lock(l5),&lock(l4),&lock(l3),&lock(l2),&unlock(l1)
+defvar $L_slash     = &unlock(l6) ,&lock(l5),&lock(l4),&lock(l3),&lock(l2),&lock(l1)
+defvar $L_1         = &lock(l6) ,&unlock(l5),&unlock(l4),&unlock(l3),&unlock(l2),&unlock(l1)
+defvar $L_2         = &lock(l6) ,&unlock(l5),&unlock(l4),&unlock(l3),&unlock(l2),&lock(l1)
+defvar $L_3         = &lock(l6) ,&unlock(l5),&unlock(l4),&unlock(l3),&lock(l2),&unlock(l1)
+defvar $L_4         = &lock(l6) ,&unlock(l5),&unlock(l4),&unlock(l3),&lock(l2),&lock(l1)
+defvar $L_5         = &lock(l6) ,&unlock(l5),&unlock(l4),&lock(l3),&unlock(l2),&unlock(l1)
+defvar $L_6         = &lock(l6) ,&unlock(l5),&unlock(l4),&lock(l3),&unlock(l2),&lock(l1)
+defvar $L_7         = &lock(l6) ,&unlock(l5),&unlock(l4),&lock(l3),&lock(l2),&unlock(l1)
+defvar $L_8         = &lock(l6) ,&unlock(l5),&unlock(l4),&lock(l3),&lock(l2),&lock(l1)
+defvar $L_9         = &lock(l6) ,&unlock(l5),&lock(l4),&unlock(l3),&unlock(l2),&unlock(l1)
+defvar $L_0         = &lock(l6) ,&unlock(l5),&lock(l4),&unlock(l3),&unlock(l2),&lock(l1)
+defvar $L_minus     = &lock(l6) ,&unlock(l5),&lock(l4),&unlock(l3),&lock(l2),&unlock(l1)
+
+# row 0
+key down _1 = $L_1
+key down _2 = $L_2
+key down _3 = $L_3
+key down _4 = $L_4
+key down _5 = $L_5
+key down _6 = $L_6
+key down _7 = $L_7
+key down _8 = $L_8
+key down _9 = $L_9
+key down _0 = $L_0
+key down minus = $L_minus
+
+# row 1
+key down q = $L_q
+key down w = $L_w
+key down e = $L_e
+key down r = $L_r
+key down t = $L_t
+key down y = $L_y
+key down u = $L_u
+key down i = $L_i
+key down o = $L_o
+key down p = $L_p
+key down leftbrace = $L_leftbrace
+
+# row 2
+key down a = $L_a
+key down s = $L_s
+key down d = $L_d
+key down f = $L_f
+key down g = $L_g
+key down h = $L_h
+key down j = $L_j
+key down k = $L_k
+key down l = $L_l
+key down semicolon = $L_semicolon
+
+# row 3
+key down z     = $L_z
+key down x     = $L_x
+key down c     = $L_c
+key down v     = $L_v
+key down b     = $L_b
+key down n     = $L_n
+key down m     = $L_m
+key down comma = $L_comma
+key down dot   = $L_dot
+key down slash = $L_slash
+
+## ロックしたキー以外は、各ロックではkey up を定義しない
+# [1]のロック時
+lock l6 {
+  default up = 
+  key up _1          = _1,$clear
+
+  key down _1        = _1,$L_1
+  key down _2        = _1,$L_2
+  key down _3        = _1,$L_3
+  key down _4        = _1,$L_4
+  key down _5        = _1,$L_5
+  key down _6        = _1,$L_6
+  key down _7        = _1,$L_7
+  key down _8        = _1,$L_8
+  key down _9        = _1,$L_9
+  key down _0        = _1,$L_0
+  key down minus     = _1,$L_minus
+
+  key down q  = _1,$L_q
+  key down w  = _1,$L_w
+  key down e  = _1,$L_e
+  key down r  = _1,$L_r
+  key down t  = _1,$L_t
+  key down y  = _1,$L_y
+  key down u  = _1,$L_u
+  key down i  = x,y,u,$clear
+  key down o  = x,y,o,$clear
+  key down p  = _1,$L_p
+  key down leftbrace = _1,$L_leftbrace
+
+  # row 2
+  key down a         = _1,$L_a
+  key down s         = _1,$L_s
+  key down d         = _1,$L_d
+  key down f         = _1,$L_f
+  key down g         = _1,$L_g
+  key down h         = _1,$L_h
+  key down j         = _1,$L_j
+  key down k         = x,a,$clear
+  key down l         = x,y,a,$clear
+  key down semicolon = _1,$L_semicolon
+  
+  # row 3
+  key down z         = _1,$L_z
+  key down x         = _1,$L_x
+  key down c         = _1,$L_c
+  key down v         = _1,$L_v
+  key down b         = _1,$L_b
+  key down n         = _1,$L_n
+  key down m         = _1,$L_m
+  key down comma     = _1,$L_comma
+  key down dot       = _1,$L_dot
+  key down slash     = _1,$L_slash
+}
+# [2]のロック時
+lock l6 && l1 {
+  default up = 
+  key up _2          = _2,$clear
+
+  key down _1        = _2,$L_1
+  key down _2        = _2,$L_2
+  key down _3        = _2,$L_3
+  key down _4        = _2,$L_4
+  key down _5        = _2,$L_5
+  key down _6        = _2,$L_6
+  key down _7        = _2,$L_7
+  key down _8        = _2,$L_8
+  key down _9        = _2,$L_9
+  key down _0        = _2,$L_0
+  key down minus     = _2,$L_minus
+
+  key down q  = _2,$L_q
+  key down w  = _2,$L_w
+  key down e  = _2,$L_e
+  key down r  = _2,$L_r
+  key down t  = _2,$L_t
+  key down y  = _2,$L_y
+  key down u  = _2,$L_u
+  key down i  = b,y,a,$clear
+  key down o  = p,y,a,$clear
+  key down p  = _2,$L_p
+  key down leftbrace = _2,$L_leftbrace
+  
+  # row 2
+  key down a         = _2,$L_a
+  key down s         = _2,$L_s
+  key down d         = _2,$L_d
+  key down f         = _2,$L_f
+  key down g         = _2,$L_g
+  key down h         = _2,$L_h
+  key down j         = _2,$L_j
+  key down k         = x,i,$clear
+  key down l         = m,y,a,$clear
+  key down semicolon = _2,$L_semicolon
+  
+  # row 3
+  key down z         = _2,$L_z
+  key down x         = _2,$L_x
+  key down c         = _2,$L_c
+  key down v         = _2,$L_v
+  key down b         = _2,$L_b
+  key down n         = _2,$L_n
+  key down m         = _2,$L_m
+  key down comma     = _2,$L_comma
+  key down dot       = _2,$L_dot
+  key down slash     = _2,$L_slash
+}
+# [3]のロック時
+lock l6 && l2 {
+  default up = 
+  key up _3          = _3,$clear
+
+  key down _1        = _3,$L_1
+  key down _2        = _3,$L_2
+  key down _3        = _3,$L_3
+  key down _4        = _3,$L_4
+  key down _5        = _3,$L_5
+  key down _6        = _3,$L_6
+  key down _7        = _3,$L_7
+  key down _8        = _3,$L_8
+  key down _9        = _3,$L_9
+  key down _0        = _3,$L_0
+  key down minus     = _3,$L_minus
+
+  key down q  = _3,$L_q
+  key down w  = _3,$L_w
+  key down e  = _3,$L_e
+  key down r  = _3,$L_r
+  key down t  = _3,$L_t
+  key down y  = _3,$L_y
+  key down u  = _3,$L_u
+  key down i  = b,y,u,$clear
+  key down o  = p,y,u,$clear
+  key down p  = _3,$L_p
+  key down leftbrace = _3,$L_leftbrace
+  
+  # row 2
+  key down a         = _3,$L_a
+  key down s         = _3,$L_s
+  key down d         = _3,$L_d
+  key down f         = _3,$L_f
+  key down g         = _3,$L_g
+  key down h         = _3,$L_h
+  key down j         = _3,$L_j
+  key down k         = x,u,$clear
+  key down l         = m,y,u,$clear
+  key down semicolon = _3,$L_semicolon
+  
+  # row 3
+  key down z         = _3,$L_z
+  key down x         = _3,$L_x
+  key down c         = _3,$L_c
+  key down v         = _3,$L_v
+  key down b         = _3,$L_b
+  key down n         = _3,$L_n
+  key down m         = _3,$L_m
+  key down comma     = _3,$L_comma
+  key down dot       = _3,$L_dot
+  key down slash     = _3,$L_slash
+}
+# [4]のロック時
+lock l6 && l2 && l1 {
+  default up = 
+  key up _4          = _4,$clear
+
+  key down _1        = _4,$L_1
+  key down _2        = _4,$L_2
+  key down _3        = _4,$L_3
+  key down _4        = _4,$L_4
+  key down _5        = _4,$L_5
+  key down _6        = _4,$L_6
+  key down _7        = _4,$L_7
+  key down _8        = _4,$L_8
+  key down _9        = _4,$L_9
+  key down _0        = _4,$L_0
+  key down minus     = _4,$L_minus
+
+  key down q  = _4,$L_q
+  key down w  = _4,$L_w
+  key down e  = _4,$L_e
+  key down r  = _4,$L_r
+  key down t  = _4,$L_t
+  key down y  = _4,$L_y
+  key down u  = _4,$L_u
+  key down i  = b,y,o,$clear
+  key down o  = p,y,o,$clear
+  key down p  = _4,$L_p
+  key down leftbrace = _4,$L_leftbrace
+  
+  # row 2
+  key down a         = _4,$L_a
+  key down s         = _4,$L_s
+  key down d         = _4,$L_d
+  key down f         = _4,$L_f
+  key down g         = _4,$L_g
+  key down h         = _4,$L_h
+  key down j         = _4,$L_j
+  key down k         = x,e,$clear
+  key down l         = m,y,o,$clear
+  key down semicolon = _4,$L_semicolon
+  
+  # row 3
+  key down z         = _4,$L_z
+  key down x         = _4,$L_x
+  key down c         = _4,$L_c
+  key down v         = _4,$L_v
+  key down b         = _4,$L_b
+  key down n         = _4,$L_n
+  key down m         = _4,$L_m
+  key down comma     = _4,$L_comma
+  key down dot       = _4,$L_dot
+  key down slash     = _4,$L_slash
+}
+# [5]のロック時
+lock l6 && l3 {
+  default up = 
+  key up _5          = _5,$clear
+
+  key down _1        = _5,$L_1
+  key down _2        = _5,$L_2
+  key down _3        = _5,$L_3
+  key down _4        = _5,$L_4
+  key down _5        = _5,$L_5
+  key down _6        = _5,$L_6
+  key down _7        = _5,$L_7
+  key down _8        = _5,$L_8
+  key down _9        = _5,$L_9
+  key down _0        = _5,$L_0
+  key down minus     = _5,$L_minus
+
+  key down q  = _5,$L_q
+  key down w  = _5,$L_w
+  key down e  = _5,$L_e
+  key down r  = _5,$L_r
+  key down t  = _5,$L_t
+  key down y  = _5,$L_y
+  key down u  = _5,$L_u
+  key down i  = _5,$L_i
+  key down o  = _5,$L_o
+  key down p  = _5,$L_p
+  key down leftbrace = _5,$L_leftbrace
+  
+  # row 2
+  key down a         = _5,$L_a
+  key down s         = _5,$L_s
+  key down d         = _5,$L_d
+  key down f         = _5,$L_f
+  key down g         = _5,$L_g
+  key down h         = _5,$L_h
+  key down j         = _5,$L_j
+  key down k         = x,o,$clear
+  key down l         = x,w,a,$clear
+  key down semicolon = _5,$L_semicolon
+  
+  # row 3
+  key down z         = _5,$L_z
+  key down x         = _5,$L_x
+  key down c         = _5,$L_c
+  key down v         = _5,$L_v
+  key down b         = _5,$L_b
+  key down n         = _5,$L_n
+  key down m         = _5,$L_m
+  key down comma     = _5,$L_comma
+  key down dot       = _5,$L_dot
+  key down slash     = _5,$L_slash
+}
+# [6]のロック時
+lock l6 && l3 && l1 {
+  default up = 
+  key up _6          = _6,$clear
+
+  key down _1        = _6,$L_1
+  key down _2        = _6,$L_2
+  key down _3        = _6,$L_3
+  key down _4        = _6,$L_4
+  key down _5        = _6,$L_5
+  key down _6        = _6,$L_6
+  key down _7        = _6,$L_7
+  key down _8        = _6,$L_8
+  key down _9        = _6,$L_9
+  key down _0        = _6,$L_0
+  key down minus     = _6,$L_minus
+
+  key down q  = _6,$L_q
+  key down w  = _6,$L_w
+  key down e  = _6,$L_e
+  key down r  = _6,$L_r
+  key down t  = _6,$L_t
+  key down y  = _6,$L_y
+  key down u  = _6,$L_u
+  key down i  = _6,$L_i
+  key down o  = _6,$L_o
+  key down p  = _6,$L_p
+  key down leftbrace = _6,$L_leftbrace
+  
+  # row 2
+  key down a         = _6,$L_a
+  key down s         = _6,$L_s
+  key down d         = _6,$L_d
+  key down f         = _6,$L_f
+  key down g         = _6,$L_g
+  key down h         = _6,$L_h
+  key down j         = _6,$L_j
+  key down k         = _6,$L_k
+  key down l         = _6,$L_l
+  key down semicolon = _6,$L_semicolon
+  
+  # row 3
+  key down z         = _6,$L_z
+  key down x         = _6,$L_x
+  key down c         = _6,$L_c
+  key down v         = _6,$L_v
+  key down b         = _6,$L_b
+  key down n         = _6,$L_n
+  key down m         = _6,$L_m
+  key down comma     = _6,$L_comma
+  key down dot       = _6,$L_dot
+  key down slash     = _6,$L_slash
+}
+# [7]のロック時
+lock l6 && l3 && l2 {
+  default up = 
+  key up _7          = _7,$clear
+
+  key down _1        = _7,$L_1
+  key down _2        = _7,$L_2
+  key down _3        = _7,$L_3
+  key down _4        = _7,$L_4
+  key down _5        = _7,$L_5
+  key down _6        = _7,$L_6
+  key down _7        = _7,$L_7
+  key down _8        = _7,$L_8
+  key down _9        = _7,$L_9
+  key down _0        = _7,$L_0
+  key down minus     = _7,$L_minus
+
+  key down q         = _7,$L_q
+  key down w         = _7,$L_w
+  key down e         = _7,$L_e
+  key down r         = _7,$L_r
+  key down t         = _7,$L_t
+  key down y         = _7,$L_y
+  key down u         = _7,$L_u
+  key down i         = _7,$L_i
+  key down o         = _7,$L_o
+  key down p         = _7,$L_p
+  key down leftbrace        = _7,$L_leftbrace
+  
+  # row 2
+  key down a         = _7,$L_a
+  key down s         = _7,$L_s
+  key down d         = _7,$L_d
+  key down f         = _7,$L_f
+  key down g         = _7,$L_g
+  key down h         = _7,$L_h
+  key down j         = _7,$L_j
+  key down k         = _7,$L_k
+  key down l         = _7,$L_l
+  key down semicolon = _7,$L_semicolon
+  
+  # row 3
+  key down z         = _7,$L_z
+  key down x         = _7,$L_x
+  key down c         = _7,$L_c
+  key down v         = _7,$L_v
+  key down b         = _7,$L_b
+  key down n         = _7,$L_n
+  key down m         = _7,$L_m
+  key down comma     = _7,$L_comma
+  key down dot       = _7,$L_dot
+  key down slash     = _7,$L_slash
+}
+# [8]のロック時
+lock l6 && l3 && l2 && l1 {
+  default up         = 
+  key up _8          = _8,$clear
+
+  key down _1        = _8,$L_1
+  key down _2        = _8,$L_2
+  key down _3        = _8,$L_3
+  key down _4        = _8,$L_4
+  key down _5        = _8,$L_5
+  key down _6        = _8,$L_6
+  key down _7        = _8,$L_7
+  key down _8        = _8,$L_8
+  key down _9        = _8,$L_9
+  key down _0        = _8,$L_0
+  key down minus     = _8,$L_minus
+
+  key down q         = _8,$L_q
+  key down w         = _8,$L_w
+  key down e         = _8,$L_e
+  key down r         = _8,$L_r
+  key down t         = _8,$L_t
+  key down y         = _8,$L_y
+  key down u         = _8,$L_u
+  key down i         = _8,$L_i
+  key down o         = _8,$L_o
+  key down p         = _8,$L_p
+  key down leftbrace        = _8,$L_leftbrace
+  
+  # row 2
+  key down a         = _8,$L_a
+  key down s         = _8,$L_s
+  key down d         = _8,$L_d
+  key down f         = _8,$L_f
+  key down g         = _8,$L_g
+  key down h         = _8,$L_h
+  key down j         = _8,$L_j
+  key down k         = _8,$L_k
+  key down l         = _8,$L_l
+  key down semicolon = _8,$L_semicolon
+  
+  # row 3
+  key down z         = _8,$L_z
+  key down x         = _8,$L_x
+  key down c         = _8,$L_c
+  key down v         = _8,$L_v
+  key down b         = _8,$L_b
+  key down n         = _8,$L_n
+  key down m         = _8,$L_m
+  key down comma     = _8,$L_comma
+  key down dot       = _8,$L_dot
+  key down slash     = _8,$L_slash
+}
+# [9]のロック時
+lock l6 && l4 {
+  default up         = 
+  key up _9          = _9,$clear
+
+  key down _1        = _9,$L_1
+  key down _2        = _9,$L_2
+  key down _3        = _9,$L_3
+  key down _4        = _9,$L_4
+  key down _5        = _9,$L_5
+  key down _6        = _9,$L_6
+  key down _7        = _9,$L_7
+  key down _8        = _9,$L_8
+  key down _9        = _9,$L_9
+  key down _0        = _9,$L_0
+  key down minus     = _9,$L_minus
+
+  key down q         = _9,$L_q
+  key down w         = _9,$L_w
+  key down e         = _9,$L_e
+  key down r         = _9,$L_r
+  key down t         = _9,$L_t
+  key down y         = _9,$L_y
+  key down u         = _9,$L_u
+  key down i         = _9,$L_i
+  key down o         = _9,$L_o
+  key down p         = _9,$L_p
+  key down leftbrace        = _9,$L_leftbrace
+  
+  # row 2
+  key down a         = _9,$L_a
+  key down s         = _9,$L_s
+  key down d         = _9,$L_d
+  key down f         = _9,$L_f
+  key down g         = _9,$L_g
+  key down h         = _9,$L_h
+  key down j         = _9,$L_j
+  key down k         = _9,$L_k
+  key down l         = _9,$L_l
+  key down semicolon = _9,$L_semicolon
+  
+  # row 3
+  key down z         = _9,$L_z
+  key down x         = _9,$L_x
+  key down c         = _9,$L_c
+  key down v         = _9,$L_v
+  key down b         = _9,$L_b
+  key down n         = _9,$L_n
+  key down m         = _9,$L_m
+  key down comma     = _9,$L_comma
+  key down dot       = _9,$L_dot
+  key down slash     = _9,$L_slash
+}
+# [0]のロック時
+lock l6 && l4 && l1 {
+  default up         = 
+  key up _0          = _0,$clear
+
+  key down _1        = _0,$L_1
+  key down _2        = _0,$L_2
+  key down _3        = _0,$L_3
+  key down _4        = _0,$L_4
+  key down _5        = _0,$L_5
+  key down _6        = _0,$L_6
+  key down _7        = _0,$L_7
+  key down _8        = _0,$L_8
+  key down _9        = _0,$L_9
+  key down _0        = _0,$L_0
+  key down minus     = _0,$L_minus
+
+  key down q         = _0,$L_q
+  key down w         = _0,$L_w
+  key down e         = _0,$L_e
+  key down r         = _0,$L_r
+  key down t         = _0,$L_t
+  key down y         = _0,$L_y
+  key down u         = _0,$L_u
+  key down i         = _0,$L_i
+  key down o         = _0,$L_o
+  key down p         = _0,$L_p
+  key down leftbrace        = _0,$L_leftbrace
+  
+  # row 2
+  key down a         = _0,$L_a
+  key down s         = colon,$clear
+  key down d         = semicolon,$clear
+  key down f         = _0,$L_f
+  key down g         = _0,$L_g
+  key down h         = _0,$L_h
+  key down j         = _0,$L_j
+  key down k         = _0,$L_k
+  key down l         = _0,$L_l
+  key down semicolon = _0,$L_semicolon
+  
+  # row 3
+  key down z         = _0,$L_z
+  key down x         = _0,$L_x
+  key down c         = _0,$L_c
+  key down v         = _0,$L_v
+  key down b         = _0,$L_b
+  key down n         = _0,$L_n
+  key down m         = _0,$L_m
+  key down comma     = _0,$L_comma
+  key down dot       = _0,$L_dot
+  key down slash     = _0,$L_slash
+}
+# [-]のロック時
+lock l6 && l4 && l2 {
+  default up         = 
+  key up minus       = minus,$clear
+
+  key down _1        = minus,$L_1
+  key down _2        = minus,$L_2
+  key down _3        = minus,$L_3
+  key down _4        = minus,$L_4
+  key down _5        = minus,$L_5
+  key down _6        = minus,$L_6
+  key down _7        = minus,$L_7
+  key down _8        = minus,$L_8
+  key down _9        = minus,$L_9
+  key down _0        = minus,$L_0
+  key down minus     = minus,$L_minus
+
+  key down q         = minus,$L_q
+  key down w         = minus,$L_w
+  key down e         = minus,$L_e
+  key down r         = minus,$L_r
+  key down t         = minus,$L_t
+  key down y         = minus,$L_y
+  key down u         = minus,$L_u
+  key down i         = minus,$L_i
+  key down o         = minus,$L_o
+  key down p         = minus,$L_p
+  key down leftbrace        = minus,$L_leftbrace
+  
+  # row 2
+  key down a         = minus,$L_a
+  key down s         = minus,$L_s
+  key down d         = minus,$L_d
+  key down f         = minus,$L_f
+  key down g         = minus,$L_g
+  key down h         = minus,$L_h
+  key down j         = minus,$L_j
+  key down k         = minus,$L_k
+  key down l         = minus,$L_l
+  key down semicolon = minus,$L_semicolon
+  
+  # row 3
+  key down z         = minus,$L_z
+  key down x         = minus,$L_x
+  key down c         = minus,$L_c
+  key down v         = minus,$L_v
+  key down b         = minus,$L_b
+  key down n         = minus,$L_n
+  key down m         = minus,$L_m
+  key down comma     = minus,$L_comma
+  key down dot       = minus,$L_dot
+  key down slash     = minus,$L_slash
+}
+
+# [q]のロック時
+lock l1 {
+  default up = 
+  key up q = minus,$clear
+
+  key down _1        = minus,$L_1
+  key down _2        = minus,$L_2
+  key down _3        = minus,$L_3
+  key down _4        = minus,$L_4
+  key down _5        = minus,$L_5
+  key down _6        = minus,$L_6
+  key down _7        = minus,$L_7
+  key down _8        = minus,$L_8
+  key down _9        = minus,$L_9
+  key down _0        = minus,$L_0
+  key down minus     = minus,$L_minus
+
+  key down q = minus,$L_q
+  key down w = minus,$L_w
+  key down e = minus,$L_e
+  key down r = minus,$L_r
+  key down t = minus,$L_t
+  key down y = minus,$L_y
+  key down u = minus,$L_u
+  key down i = h,y,u,$clear
+  key down o = r,y,u,$clear
+  key down p = minus,$L_p
+  key down leftbrace = minus,$L_leftbrace
+  
+  # row 2
+  key down a = minus,$L_a
+  key down s = minus,$L_s
+  key down d = minus,$L_d
+  key down f = minus,$L_f
+  key down g = minus,$L_g
+  key down h = minus,$L_h
+  key down j = minus,$L_j
+  key down k = f,a,$clear
+  key down l = d,i,$clear
+  key down semicolon = minus,$L_semicolon
+  
+  # row 3
+  key down z     = minus,$L_z
+  key down x     = minus,$L_x
+  key down c     = minus,$L_c
+  key down v     = minus,$L_v
+  key down b     = minus,$L_b
+  key down n     = minus,$L_n
+  key down m     = minus,$L_m
+  key down comma = minus,$L_comma
+  key down dot   = minus,$L_dot
+  key down slash = minus,$L_slash
+}
+
+# [w]のロック時
+lock l2 {
+  default up = 
+  key up w           = n,i,$clear
+
+  key down _1        = n,i,$L_1
+  key down _2        = n,i,$L_2
+  key down _3        = n,i,$L_3
+  key down _4        = n,i,$L_4
+  key down _5        = n,i,$L_5
+  key down _6        = n,i,$L_6
+  key down _7        = n,i,$L_7
+  key down _8        = n,i,$L_8
+  key down _9        = n,i,$L_9
+  key down _0        = n,i,$L_0
+  key down minus     = n,i,$L_minus
+
+  key down q         = n,i,$L_q
+  key down w         = n,i,$L_w
+  key down e         = n,i,$L_e
+  key down r         = n,i,$L_r
+  key down t         = n,i,$L_t
+  key down y         = n,i,$L_y
+  key down u         = n,i,$L_u
+  key down i         = s,y,u,$clear
+  key down o         = j,u,$clear
+  key down p = n,i,$L_p
+  key down leftbrace = n,i,$L_leftbrace
+  
+  # row 2
+  key down a         = n,i,$L_a
+  key down s         = n,i,$L_s
+  key down d         = n,i,$L_d
+  key down f         = n,i,$L_f
+  key down g         = n,i,$L_g
+  key down h         = n,i,$L_h
+  key down j         = n,i,$L_j
+  key down k         = g,o,$clear
+  key down l         = m,e,$clear
+  key down semicolon         = n,i,$L_semicolon
+  
+  # row 3
+  key down z         = n,i,$L_z
+  key down x         = n,i,$L_x
+  key down c         = n,i,$L_c
+  key down v         = n,i,$L_v
+  key down b         = n,i,$L_b
+  key down n         = n,i,$L_n
+  key down m         = n,i,$L_m
+  key down comma     = n,i,$L_comma
+  key down dot       = n,i,$L_dot
+  key down slash     = n,i,$L_slash
+}
+
+# [e]のロック時
+lock l2 && l1 {
+  default up = 
+  key up e = h,a,$clear
+
+  key down _1        = h,a,$L_1
+  key down _2        = h,a,$L_2
+  key down _3        = h,a,$L_3
+  key down _4        = h,a,$L_4
+  key down _5        = h,a,$L_5
+  key down _6        = h,a,$L_6
+  key down _7        = h,a,$L_7
+  key down _8        = h,a,$L_8
+  key down _9        = h,a,$L_9
+  key down _0        = h,a,$L_0
+  key down minus     = h,a,$L_minus
+
+  key down q = h,a,$L_q
+  key down w = h,a,$L_w
+  key down e = h,a,$L_e
+  key down r = h,a,$L_r
+  key down t = h,a,$L_t
+  key down y = h,a,$L_y
+  key down u = h,a,$L_u
+  key down i = s,y,o,$clear
+  key down o = j,o,$clear
+  key down p = h,a,$L_p
+  key down leftbrace = h,a,$L_leftbrace
+  
+  # row 2
+  key down a = h,a,$L_a
+  key down s = h,a,$L_s
+  key down d = h,a,$L_d
+  key down f = h,a,$L_f
+  key down g = h,a,$L_g
+  key down h = h,a,$L_h
+  key down j = h,a,$L_j
+  key down k = h,u,$clear
+  key down l = k,e,$clear
+  key down semicolon = h,a,$L_semicolon
+  
+  # row 3
+  key down z     = h,a,$L_z
+  key down x     = h,a,$L_x
+  key down c     = h,a,$L_c
+  key down v     = h,a,$L_v
+  key down b     = h,a,$L_b
+  key down n     = h,a,$L_n
+  key down m     = h,a,$L_m
+  key down comma = h,a,$L_comma
+  key down dot   = h,a,$L_dot
+  key down slash = h,a,$L_slash
+}
+
+# [r]のロック時
+lock l3 {
+  default up = 
+  key up r = comma,$clear
+
+  key down _1        = comma,$L_1
+  key down _2        = comma,$L_2
+  key down _3        = comma,$L_3
+  key down _4        = comma,$L_4
+  key down _5        = comma,$L_5
+  key down _6        = comma,$L_6
+  key down _7        = comma,$L_7
+  key down _8        = comma,$L_8
+  key down _9        = comma,$L_9
+  key down _0        = comma,$L_0
+  key down minus     = comma,$L_minus
+
+  key down q = comma,$L_q
+  key down w = comma,$L_w
+  key down e = comma,$L_e
+  key down r = comma,$L_r
+  key down t = comma,$L_t
+  key down y = comma,$L_y
+  key down u = comma,$L_u
+  key down i = k,y,u,$clear
+  key down o = g,y,u,$clear
+  key down p = comma,$L_p
+  key down leftbrace = comma,$L_leftbrace
+  
+  # row 2
+  key down a = comma,$L_a
+  key down s = comma,$L_s
+  key down d = comma,$L_d
+  key down f = comma,$L_f
+  key down g = comma,$L_g
+  key down h = comma,$L_h
+  key down j = comma,$L_j
+  key down k = f,i,$clear
+  key down l = t,h,i,$clear
+  key down semicolon = comma,$L_semicolon
+  
+  # row 3
+  key down z     = comma,$L_z
+  key down x     = comma,$L_x
+  key down c     = comma,$L_c
+  key down v     = comma,$L_v
+  key down b     = comma,$L_b
+  key down n     = comma,$L_n
+  key down m     = comma,$L_m
+  key down comma = comma,$L_comma
+  key down dot   = comma,$L_dot
+  key down slash = comma,$L_slash
+}
+
+# [t]のロック時
+lock l3 && l1 {
+  default up = 
+  key up t           = t,i,$clear
+
+  key down _1        = t,i,$L_1
+  key down _2        = t,i,$L_2
+  key down _3        = t,i,$L_3
+  key down _4        = t,i,$L_4
+  key down _5        = t,i,$L_5
+  key down _6        = t,i,$L_6
+  key down _7        = t,i,$L_7
+  key down _8        = t,i,$L_8
+  key down _9        = t,i,$L_9
+  key down _0        = t,i,$L_0
+  key down minus     = t,i,$L_minus
+
+  key down q         = t,i,$L_q
+  key down w         = t,i,$L_w
+  key down e         = t,i,$L_e
+  key down r         = t,i,$L_r
+  key down t         = t,i,$L_t
+  key down y         = t,i,$L_y
+  key down u         = t,i,$L_u
+  key down i         = t,y,u,$clear
+  key down o         = n,y,u,$clear
+  key down p = t,i,$L_p
+  key down leftbrace = t,i,$L_leftbrace
+  
+  # row 2
+  key down a         = t,i,$L_a
+  key down s         = t,i,$L_s
+  key down d         = t,i,$L_d
+  key down f         = t,i,$L_f
+  key down g         = t,i,$L_g
+  key down h         = t,i,$L_h
+  key down j         = t,i,$L_j
+  key down k         = f,e,$clear
+  key down l         = d,h,i,$clear
+  key down semicolon         = t,i,$L_semicolon
+  
+  # row 3
+  key down z         = t,i,$L_z
+  key down x         = t,i,$L_x
+  key down c         = t,i,$L_c
+  key down v         = t,i,$L_v
+  key down b         = t,i,$L_b
+  key down n         = t,i,$L_n
+  key down m         = t,i,$L_m
+  key down comma     = t,i,$L_comma
+  key down dot       = t,i,$L_dot
+  key down slash     = t,i,$L_slash
+}
+
+# [y]のロック時
+lock l3 && l2 {
+  default up = 
+  key up y           = g,u,$clear
+
+  key down _1        = g,u,$L_1
+  key down _2        = g,u,$L_2
+  key down _3        = g,u,$L_3
+  key down _4        = g,u,$L_4
+  key down _5        = g,u,$L_5
+  key down _6        = g,u,$L_6
+  key down _7        = g,u,$L_7
+  key down _8        = g,u,$L_8
+  key down _9        = g,u,$L_9
+  key down _0        = g,u,$L_0
+  key down minus     = g,u,$L_minus
+
+  key down q         = g,u,$L_q
+  key down w         = g,u,$L_w
+  key down e         = g,u,$L_e
+  key down r         = g,u,$L_r
+  key down t         = g,u,$L_t
+  key down y         = g,u,$L_y
+  key down u         = g,u,$L_u
+  key down i         = g,u,$L_i
+  key down o         = g,u,$L_o
+  key down p = g,u,$L_p
+  key down leftbrace = g,u,$L_leftbrace
+  
+  # row 2
+  key down a         = g,u,$L_a
+  key down s         = s,h,e,$clear
+  key down d         = u,x,i,$clear
+  key down f         = g,u,$L_f
+  key down g         = g,u,$L_g
+  key down h         = g,u,$L_h
+  key down j         = g,u,$L_j
+  key down k         = g,u,$L_k
+  key down l         = g,u,$L_l
+  key down semicolon         = g,u,$L_semicolon
+  
+  # row 3
+  key down z         = g,u,$L_z
+  key down x         = g,u,$L_x
+  key down c         = g,u,$L_c
+  key down v         = g,u,$L_v
+  key down b         = g,u,$L_b
+  key down n         = g,u,$L_n
+  key down m         = g,u,$L_m
+  key down comma     = g,u,$L_comma
+  key down dot       = g,u,$L_dot
+  key down slash     = g,u,$L_slash
+}
+
+# [u]のロック時
+lock l3 && l2 && l1 {
+  default up = 
+  key up u           = b,a,$clear
+
+  key down _1        = b,a,$L_1
+  key down _2        = b,a,$L_2
+  key down _3        = b,a,$L_3
+  key down _4        = b,a,$L_4
+  key down _5        = b,a,$L_5
+  key down _6        = b,a,$L_6
+  key down _7        = b,a,$L_7
+  key down _8        = b,a,$L_8
+  key down _9        = b,a,$L_9
+  key down _0        = b,a,$L_0
+  key down minus     = b,a,$L_minus
+
+  key down q         = b,a,$L_q
+  key down w         = b,a,$L_w
+  key down e         = b,a,$L_e
+  key down r         = b,a,$L_r
+  key down t         = b,a,$L_t
+  key down y         = b,a,$L_y
+  key down u         = b,a,$L_u
+  key down i         = b,a,$L_i
+  key down o         = b,a,$L_o
+  key down p = b,a,$L_p
+  key down leftbrace = b,a,$L_leftbrace
+  
+  # row 2
+  key down a         = b,a,$L_a
+  key down s         = p,e,$clear
+  key down d         = p,a,$clear
+  key down f         = b,a,$L_f
+  key down g         = b,a,$L_g
+  key down h         = b,a,$L_h
+  key down j         = b,a,$L_j
+  key down k         = b,a,$L_k
+  key down l         = b,a,$L_l
+  key down semicolon         = b,a,$L_semicolon
+  
+  # row 3
+  key down z         = b,a,$L_z
+  key down x         = b,a,$L_x
+  key down c         = b,a,$L_c
+  key down v         = b,a,$L_v
+  key down b         = b,a,$L_b
+  key down n         = b,a,$L_n
+  key down m         = b,a,$L_m
+  key down comma     = b,a,$L_comma
+  key down dot       = b,a,$L_dot
+  key down slash     = b,a,$L_slash
+}
+
+# [i]のロック時
+lock l4 {
+  default up = 
+  key up i           = k,o,$clear
+
+  key down _1        = x,y,u,$clear
+  key down _2        = b,y,a,$clear
+  key down _3        = b,y,u,$clear
+  key down _4        = b,y,o,$clear
+  key down _5        = k,o,$L_5
+  key down _6        = k,o,$L_6
+  key down _7        = k,o,$L_7
+  key down _8        = k,o,$L_8
+  key down _9        = k,o,$L_9
+  key down _0        = k,o,$L_0
+  key down minus     = k,o,$L_minus
+
+  key down q         = h,y,u,$clear
+  key down w         = s,y,u,$clear
+  key down e         = s,y,o,$clear
+  key down r         = k,y,u,$clear
+  key down t         = t,y,u,$clear
+  key down y         = k,o,$L_y
+  key down u         = k,o,$L_u
+  key down i         = k,o,$L_i
+  key down o         = k,o,$L_o
+  key down p = k,o,$L_p
+  key down leftbrace = k,o,$L_leftbrace
+  
+  # row 2
+  key down a         = h,y,o,$clear
+  key down s         = d,o,$clear
+  key down d         = y,o,$clear
+  key down f         = k,y,o,$clear
+  key down g         = t,y,o,$clear
+  key down h         = k,o,$L_h
+  key down j         = k,o,$L_j
+  key down k         = k,o,$L_k
+  key down l         = k,o,$L_l
+  key down semicolon         = k,o,$L_semicolon
+  
+  # row 3
+  key down z         = h,y,a,$clear
+  key down x         = slash,$clear
+  key down c         = s,y,a,$clear
+  key down v         = k,y,a,$clear
+  key down b         = t,y,a,$clear
+  key down n         = k,o,$L_n
+  key down m         = k,o,$L_m
+  key down comma     = k,o,$L_comma
+  key down dot       = k,o,$L_dot
+  key down slash     = k,o,$L_slash
+}
+
+# [o]のロック時
+lock l4 && l1 {
+  default up = 
+  key up o           = g,a,$clear
+
+  key down _1        = x,y,o,$clear
+  key down _2        = p,y,a,$clear
+  key down _3        = p,y,u,$clear
+  key down _4        = p,y,o,$clear
+  key down _5        = g,a,$L_5
+  key down _6        = g,a,$L_6
+  key down _7        = g,a,$L_7
+  key down _8        = g,a,$L_8
+  key down _9        = g,a,$L_9
+  key down _0        = g,a,$L_0
+  key down minus     = g,a,$L_minus
+
+  key down q         = r,y,u,$clear
+  key down w         = j,u,$clear
+  key down e         = j,o,$clear
+  key down r         = g,y,u,$clear
+  key down t         = n,y,u,$clear
+  key down y         = g,a,$L_y
+  key down u         = g,a,$L_u
+  key down i         = g,a,$L_i
+  key down o         = g,a,$L_o
+  key down p = g,a,$L_p
+  key down leftbrace = g,a,$L_leftbrace
+  
+  # row 2
+  key down a         = r,y,o,$clear
+  key down s         = y,a,$clear
+  key down d         = m,i,$clear
+  key down f         = g,y,o,$clear
+  key down g         = n,y,o,$clear
+  key down h         = g,a,$L_h
+  key down j         = g,a,$L_j
+  key down k         = g,a,$L_k
+  key down l         = g,a,$L_l
+  key down semicolon         = g,a,$L_semicolon
+  
+  # row 3
+  key down z         = r,y,a,$clear
+  key down x         = g,a,$L_x
+  key down c         = j,a,$clear
+  key down v         = g,y,a,$clear
+  key down b         = n,y,a,$clear
+  key down n         = g,a,$L_n
+  key down m         = g,a,$L_m
+  key down comma     = g,a,$L_comma
+  key down dot       = g,a,$L_dot
+  key down slash     = g,a,$L_slash
+}
+
+# [p]のロック時
+lock l4 && l2 {
+  default up         = 
+  key up p           = h,i,$clear
+
+  key down _1        = h,i,$L_1
+  key down _2        = h,i,$L_2
+  key down _3        = h,i,$L_3
+  key down _4        = h,i,$L_4
+  key down _5        = h,i,$L_5
+  key down _6        = h,i,$L_6
+  key down _7        = h,i,$L_7
+  key down _8        = h,i,$L_8
+  key down _9        = h,i,$L_9
+  key down _0        = h,i,$L_0
+  key down minus     = h,i,$L_minus
+
+  key down q         = h,i,$L_q
+  key down w         = h,i,$L_w
+  key down e         = h,i,$L_e
+  key down r         = h,i,$L_r
+  key down t         = h,i,$L_t
+  key down y         = h,i,$L_y
+  key down u         = h,i,$L_u
+  key down i         = h,i,$L_i
+  key down o         = h,i,$L_o
+  key down p         = h,i,$L_p
+  key down leftbrace        = h,i,$L_leftbrace
+  
+  # row 2
+  key down a         = h,i,$L_a
+  key down s         = j,e,$clear
+  key down d         = u,x,e,$clear
+  key down f         = h,i,$L_f
+  key down g         = h,i,$L_g
+  key down h         = h,i,$L_h
+  key down j         = h,i,$L_j
+  key down k         = h,i,$L_k
+  key down l         = h,i,$L_l
+  key down semicolon = h,i,$L_semicolon
+  
+  # row 3
+  key down z         = h,i,$L_z
+  key down x         = h,i,$L_x
+  key down c         = h,i,$L_c
+  key down v         = h,i,$L_v
+  key down b         = h,i,$L_b
+  key down n         = h,i,$L_n
+  key down m         = h,i,$L_m
+  key down comma     = h,i,$L_comma
+  key down dot       = h,i,$L_dot
+  key down slash     = h,i,$L_slash
+}
+
+# [@]のロック時
+lock l4 && l2 && l1 {
+  default up         = 
+  key up leftbrace          = g,e,$clear
+
+  key down _1        = g,e,$L_1
+  key down _2        = g,e,$L_2
+  key down _3        = g,e,$L_3
+  key down _4        = g,e,$L_4
+  key down _5        = g,e,$L_5
+  key down _6        = g,e,$L_6
+  key down _7        = g,e,$L_7
+  key down _8        = g,e,$L_8
+  key down _9        = g,e,$L_9
+  key down _0        = g,e,$L_0
+  key down minus     = g,e,$L_minus
+
+  key down q         = g,e,$L_q
+  key down w         = g,e,$L_w
+  key down e         = g,e,$L_e
+  key down r         = g,e,$L_r
+  key down t         = g,e,$L_t
+  key down y         = g,e,$L_y
+  key down u         = g,e,$L_u
+  key down i         = g,e,$L_i
+  key down o         = g,e,$L_o
+  key down p         = g,e,$L_p
+  key down leftbrace        = g,e,$L_leftbrace
+  
+  # row 2
+  key down a         = g,e,$L_a
+  key down s         = g,e,$L_s
+  key down d         = u,x,o,$clear
+  key down f         = g,e,$L_f
+  key down g         = g,e,$L_g
+  key down h         = g,e,$L_h
+  key down j         = g,e,$L_j
+  key down k         = g,e,$L_k
+  key down l         = g,e,$L_l
+  key down semicolon = g,e,$L_semicolon
+  
+  # row 3
+  key down z         = g,e,$L_z
+  key down x         = g,e,$L_x
+  key down c         = g,e,$L_c
+  key down v         = g,e,$L_v
+  key down b         = g,e,$L_b
+  key down n         = g,e,$L_n
+  key down m         = g,e,$L_m
+  key down comma     = g,e,$L_comma
+  key down dot       = g,e,$L_dot
+  key down slash     = g,e,$L_slash
+}
+
+# [a]のロック時
+lock l4 && l3 {
+  default up         = 
+  key up a           = n,o,$clear
+
+  key down _1        = n,o,$L_1
+  key down _2        = n,o,$L_2
+  key down _3        = n,o,$L_3
+  key down _4        = n,o,$L_4
+  key down _5        = n,o,$L_5
+  key down _6        = n,o,$L_6
+  key down _7        = n,o,$L_7
+  key down _8        = n,o,$L_8
+  key down _9        = n,o,$L_9
+  key down _0        = n,o,$L_0
+  key down minus     = n,o,$L_minus
+
+  key down q         = n,o,$L_q
+  key down w         = n,o,$L_w
+  key down e         = n,o,$L_e
+  key down r         = n,o,$L_r
+  key down t         = n,o,$L_t
+  key down y         = n,o,$L_y
+  key down u         = n,o,$L_u
+  key down i         = h,y,o,$clear
+  key down o         = r,y,o,$clear
+  key down p         = n,o,$L_p
+  key down leftbrace        = n,o,$L_leftbrace
+  
+  # row 2
+  key down a         = n,o,$L_a
+  key down s         = n,o,$L_s
+  key down d         = n,o,$L_d
+  key down f         = n,o,$L_f
+  key down g         = n,o,$L_g
+  key down h         = n,o,$L_h
+  key down j         = n,o,$L_j
+  key down k         = h,o,$clear
+  key down l         = w,o,$clear
+  key down semicolon = n,o,$L_semicolon
+  
+  # row 3
+  key down z         = n,o,$L_z
+  key down x         = n,o,$L_x
+  key down c         = n,o,$L_c
+  key down v         = n,o,$L_v
+  key down b         = n,o,$L_b
+  key down n         = n,o,$L_n
+  key down m         = n,o,$L_m
+  key down comma     = n,o,$L_comma
+  key down dot       = n,o,$L_dot
+  key down slash     = n,o,$L_slash
+}
+
+# [s]のロック時
+lock l4 && l3 && l1 {
+  default up         = 
+  key up s           = t,o,$clear
+
+  key down _1        = t,o,$L_1
+  key down _2        = t,o,$L_2
+  key down _3        = t,o,$L_3
+  key down _4        = t,o,$L_4
+  key down _5        = t,o,$L_5
+  key down _6        = t,o,$L_6
+  key down _7        = t,o,$L_7
+  key down _8        = t,o,$L_8
+  key down _9        = t,o,$L_9
+  key down _0        = colon,$clear
+  key down minus     = t,o,$L_minus
+
+  key down q         = t,o,$L_q
+  key down w         = t,o,$L_w
+  key down e         = t,o,$L_e
+  key down r         = t,o,$L_r
+  key down t         = t,o,$L_t
+  key down y         = s,y,e,$clear
+  key down u         = p,e,$clear
+  key down i         = d,o,$clear
+  key down o         = y,a,$clear
+  key down p         = j,e,$clear
+  key down leftbrace        = leftbrace,$L_leftbrace
+  
+  # row 2
+  key down a         = t,o,$L_a
+  key down s         = t,o,$L_s
+  key down d         = t,o,$L_d
+  key down f         = t,o,$L_f
+  key down g         = t,o,$L_g
+  key down h         = b,i,$clear
+  key down j         = r,a,$clear
+  key down k         = j,i,$clear
+  key down l         = s,a,$clear
+  key down semicolon = s,o,$clear
+  
+  # row 3
+  key down z         = t,o,$L_z
+  key down x         = t,o,$L_x
+  key down c         = t,o,$L_c
+  key down v         = t,o,$L_v
+  key down b         = t,o,$L_b
+  key down n         = w,a,$clear
+  key down m         = d,a,$clear
+  key down comma     = p,i,$clear
+  key down dot       = p,o,$clear
+  key down slash     = t,y,e,$clear
+}
+
+# [d]のロック時
+lock l4 && l3 && l2 {
+  default up = 
+  key up d           = k,a,$clear
+
+  key down _1        = k,a,$L_1
+  key down _2        = k,a,$L_2
+  key down _3        = k,a,$L_3
+  key down _4        = k,a,$L_4
+  key down _5        = k,a,$L_5
+  key down _6        = k,a,$L_6
+  key down _7        = k,a,$L_7
+  key down _8        = k,a,$L_8
+  key down _9        = k,a,$L_9
+  key down _0        = semicolon,$clear
+  key down minus     = k,a,$L_minus
+
+  key down q         = k,a,$L_q
+  key down w         = k,a,$L_w
+  key down e         = k,a,$L_e
+  key down r         = k,a,$L_r
+  key down t         = k,a,$L_y
+  key down y         = w,i,$clear
+  key down u         = p,a,$clear
+  key down i         = y,o,$clear
+  key down o         = m,i,$clear
+  key down p = w,e,$clear
+  key down leftbrace = w,o,$clear
+  
+  # row 2
+  key down a         = k,a,$L_a
+  key down s         = k,a,$L_s
+  key down d         = k,a,$L_d
+  key down f         = k,a,$L_f
+  key down g         = k,a,$L_g
+  key down h         = h,e,$clear
+  key down j         = a,$clear
+  key down k         = r,e,$clear
+  key down l         = o,$clear
+  key down semicolon         = e,$clear
+  
+  # row 3
+  key down z         = k,a,$L_z
+  key down x         = k,a,$L_x
+  key down c         = k,a,$L_c
+  key down v         = k,a,$L_v
+  key down b         = k,a,$L_b
+  key down n         = s,e,$clear
+  key down m         = n,e,$clear
+  key down comma     = b,e,$clear
+  key down dot       = p,u,$clear
+  key down slash     = v,u,$clear
+}
+
+# [f]のロック時
+lock l4 && l3 && l2 && l1 {
+  default up = 
+  key up f           = n,n,$clear
+
+  key down _1        = n,n,$L_1
+  key down _2        = n,n,$L_2
+  key down _3        = n,n,$L_3
+  key down _4        = n,n,$L_4
+  key down _5        = n,n,$L_5
+  key down _6        = n,n,$L_6
+  key down _7        = n,n,$L_7
+  key down _8        = n,n,$L_8
+  key down _9        = n,n,$L_9
+  key down _0        = n,n,$L_0
+  key down minus     = n,n,$L_minus
+
+  key down q         = n,n,$L_q
+  key down w         = n,n,$L_w
+  key down e         = n,n,$L_e
+  key down r         = n,n,$L_r
+  key down t         = n,n,$L_t
+  key down y         = n,n,$L_y
+  key down u         = n,n,$L_u
+  key down i         = k,y,o,$clear
+  key down o         = g,y,o,$clear
+  key down p = n,n,$L_p
+  key down leftbrace = n,n,$L_leftbrace
+  
+  # row 2
+  key down a         = n,n,$L_a
+  key down s         = n,n,$L_s
+  key down d         = n,n,$L_d
+  key down f         = n,n,$L_f
+  key down g         = n,n,$L_g
+  key down h         = n,n,$L_h
+  key down j         = n,n,$L_j
+  key down k         = m,o,$clear
+  key down l         = r,i,$clear
+  key down semicolon         = n,n,$L_semicolon
+  
+  # row 3
+  key down z         = n,n,$L_z
+  key down x         = n,n,$L_x
+  key down c         = n,n,$L_c
+  key down v         = n,n,$L_v
+  key down b         = n,n,$L_b
+  key down n         = n,n,$L_n
+  key down m         = n,n,$L_m
+  key down comma     = n,n,$L_comma
+  key down dot       = n,n,$L_dot
+  key down slash     = n,n,$L_slash
+}
+
+# [g]のロック時
+lock l5 {
+  default up = 
+  key up g           = x,t,u,$clear
+
+  key down _1        = x,t,u,$L_1
+  key down _2        = x,t,u,$L_2
+  key down _3        = x,t,u,$L_3
+  key down _4        = x,t,u,$L_4
+  key down _5        = x,t,u,$L_5
+  key down _6        = x,t,u,$L_6
+  key down _7        = x,t,u,$L_7
+  key down _8        = x,t,u,$L_8
+  key down _9        = x,t,u,$L_9
+  key down _0        = x,t,u,$L_0
+  key down minus     = x,t,u,$L_minus
+
+  key down q         = x,t,u,$L_q
+  key down w         = x,t,u,$L_w
+  key down e         = x,t,u,$L_e
+  key down r         = x,t,u,$L_r
+  key down t         = x,t,u,$L_t
+  key down y         = x,t,u,$L_y
+  key down u         = x,t,u,$L_u
+  key down i         = t,y,o,$clear
+  key down o         = n,y,o,$clear
+  key down p = x,t,u,$L_p
+  key down leftbrace = x,t,u,$L_leftbrace
+  
+  # row 2
+  key down a         = x,t,u,$L_a
+  key down s         = x,t,u,$L_s
+  key down d         = x,t,u,$L_d
+  key down f         = x,t,u,$L_f
+  key down g         = x,t,u,$L_g
+  key down h         = x,t,u,$L_h
+  key down j         = x,t,u,$L_j
+  key down k         = y,u,$clear
+  key down l         = z,u,$clear
+  key down semicolon         = x,t,u,$L_semicolon
+  
+  # row 3
+  key down z         = x,t,u,$L_z
+  key down x         = x,t,u,$L_x
+  key down c         = x,t,u,$L_c
+  key down v         = x,t,u,$L_v
+  key down b         = x,t,u,$L_b
+  key down n         = x,t,u,$L_n
+  key down m         = x,t,u,$L_m
+  key down comma     = x,t,u,$L_comma
+  key down dot       = x,t,u,$L_dot
+  key down slash     = x,t,u,$L_slash
+}
+
+# [h]のロック時
+lock l5 && l1 {
+  default up         = 
+  key up h           = k,u,$clear
+
+  key down _1        = k,u,$L_1
+  key down _2        = k,u,$L_2
+  key down _3        = k,u,$L_3
+  key down _4        = k,u,$L_4
+  key down _5        = k,u,$L_5
+  key down _6        = k,u,$L_6
+  key down _7        = k,u,$L_7
+  key down _8        = k,u,$L_8
+  key down _9        = k,u,$L_9
+  key down _0        = k,u,$L_0
+  key down minus     = k,u,$L_minus
+
+  key down q         = k,u,$L_q
+  key down w         = k,u,$L_w
+  key down e         = k,u,$L_e
+  key down r         = k,u,$L_r
+  key down t         = k,u,$L_t
+  key down y         = k,u,$L_y
+  key down u         = k,u,$L_u
+  key down i         = k,u,$L_i
+  key down o         = k,u,$L_o
+  key down p         = k,u,$L_p
+  key down leftbrace        = k,u,$L_leftbrace
+  
+  # row 2
+  key down a         = k,u,$L_a
+  key down s         = b,i,$clear
+  key down d         = h,e,$clear
+  key down f         = k,u,$L_f
+  key down g         = k,u,$L_g
+  key down h         = k,u,$L_h
+  key down j         = k,u,$L_j
+  key down k         = k,u,$L_k
+  key down l         = k,u,$L_l
+  key down semicolon = k,u,$L_semicolon
+  
+  # row 3
+  key down z         = k,u,$L_z
+  key down x         = k,u,$L_x
+  key down c         = k,u,$L_c
+  key down v         = k,u,$L_v
+  key down b         = k,u,$L_b
+  key down n         = k,u,$L_n
+  key down m         = k,u,$L_m
+  key down comma     = k,u,$L_comma
+  key down dot       = k,u,$L_dot
+  key down slash     = k,u,$L_slash
+}
+
+# [j]のロック時
+lock l5 && l2 {
+  default up         = 
+  key up j           = u,$clear
+
+  key down _1        = u,$L_1
+  key down _2        = u,$L_2
+  key down _3        = u,$L_3
+  key down _4        = u,$L_4
+  key down _5        = u,$L_5
+  key down _6        = u,$L_6
+  key down _7        = u,$L_7
+  key down _8        = u,$L_8
+  key down _9        = u,$L_9
+  key down _0        = u,$L_0
+  key down minus     = u,$L_minus
+
+  key down q         = u,$L_q
+  key down w         = u,$L_w
+  key down e         = u,$L_e
+  key down r         = u,$L_r
+  key down t         = u,$L_t
+  key down y         = u,$L_y
+  key down u         = u,$L_u
+  key down i         = u,$L_i
+  key down o         = u,$L_o
+  key down p         = u,$L_p
+  key down leftbrace        = u,$L_leftbrace
+  
+  # row 2
+  key down a         = u,$L_a
+  key down s         = r,a,$clear
+  key down d         = a,$clear
+  key down f         = u,$L_f
+  key down g         = u,$L_g
+  key down h         = u,$L_h
+  key down j         = u,$L_j
+  key down k         = u,$L_k
+  key down l         = u,$L_l
+  key down semicolon = u,$L_semicolon
+  
+  # row 3
+  key down z         = u,$L_z
+  key down x         = u,$L_x
+  key down c         = u,$L_c
+  key down v         = u,$L_v
+  key down b         = u,$L_b
+  key down n         = u,$L_n
+  key down m         = u,$L_m
+  key down comma     = u,$L_comma
+  key down dot       = u,$L_dot
+  key down slash     = u,$L_slash
+}
+
+# [k]のロック時
+lock l5 && l2 && l1 {
+  default up = 
+  key up k           = i,$clear
+
+  key down _1        = x,a,$clear
+  key down _2        = x,i,$clear
+  key down _3        = x,u,$clear
+  key down _4        = x,e,$clear
+  key down _5        = x,o,$clear
+  key down _6        = i,$L_6
+  key down _7        = i,$L_7
+  key down _8        = i,$L_8
+  key down _9        = i,$L_9
+  key down _0        = i,$L_0
+  key down minus     = i,$L_minus
+
+  key down q         = f,a,$clear
+  key down w         = g,o,$clear
+  key down e         = h,u,$clear
+  key down r         = f,i,$clear
+  key down t         = f,e,$clear
+  key down y         = i,$L_y
+  key down u         = i,$L_u
+  key down i         = i,$L_i
+  key down o         = i,$L_o
+  key down p = i,$L_p
+  key down leftbrace = i,$L_leftbrace
+  
+  # row 2
+  key down a         = h,o,$clear
+  key down s         = j,i,$clear
+  key down d         = r,e,$clear
+  key down f         = m,o,$clear
+  key down g         = y,u,$clear
+  key down h         = i,$L_h
+  key down j         = i,$L_j
+  key down k         = i,$L_k
+  key down l         = i,$L_l
+  key down semicolon         = i,$L_semicolon
+  
+  # row 3
+  key down z         = d,u,$clear
+  key down x         = z,o,$clear
+  key down c         = b,o,$clear
+  key down v         = m,u,$clear
+  key down b         = f,o,$clear
+  key down n         = i,$L_n
+  key down m         = i,$L_m
+  key down comma     = i,$L_comma
+  key down dot       = i,$L_dot
+  key down slash     = i,$L_slash
+}
+
+# [l]のロック時
+lock l5 && l3 {
+  default up = 
+  key up l           = s,i,$clear
+
+  key down _1        = x,y,a,$clear
+  key down _2        = m,y,a,$clear
+  key down _3        = m,y,u,$clear
+  key down _4        = m,y,o,$clear
+  key down _5        = x,w,a,$clear
+  key down _6        = s,i,$L_6
+  key down _7        = s,i,$L_7
+  key down _8        = s,i,$L_8
+  key down _9        = s,i,$L_9
+  key down _0        = s,i,$L_0
+  key down minus     = s,i,$L_minus
+
+  key down q         = d,i,$clear
+  key down w         = m,e,$clear
+  key down e         = k,e,$clear
+  key down r         = t,h,i,$clear
+  key down t         = d,h,i,$clear
+  key down y         = s,i,$L_y
+  key down u         = s,i,$L_u
+  key down i         = s,i,$L_i
+  key down o         = s,i,$L_o
+  key down p = s,i,$L_p
+  key down leftbrace = s,i,$L_leftbrace
+  
+  # row 2
+  key down a         = w,o,$clear
+  key down s         = s,a,$clear
+  key down d         = o,$clear
+  key down f         = r,i,$clear
+  key down g         = z,u,$clear
+  key down h         = s,i,$L_h
+  key down j         = s,i,$L_j
+  key down k         = s,i,$L_k
+  key down l         = s,i,$L_l
+  key down semicolon         = s,i,$L_semicolon
+  
+  # row 3
+  key down z         = z,e,$clear
+  key down x         = z,a,$clear
+  key down c         = g,i,$clear
+  key down v         = r,o,$clear
+  key down b         = n,u,$clear
+  key down n         = s,i,$L_n
+  key down m         = s,i,$L_m
+  key down comma     = s,i,$L_comma
+  key down dot       = s,i,$L_dot
+  key down slash     = s,i,$L_slash
+}
+
+# [semicolon]のロック時
+lock l5 && l3 && l1 {
+  default up         = 
+  key up semicolon           = n,a,$clear
+
+  key down _1        = n,a,$L_1
+  key down _2        = n,a,$L_2
+  key down _3        = n,a,$L_3
+  key down _4        = n,a,$L_4
+  key down _5        = n,a,$L_5
+  key down _6        = n,a,$L_6
+  key down _7        = n,a,$L_7
+  key down _8        = n,a,$L_8
+  key down _9        = n,a,$L_9
+  key down _0        = n,a,$L_0
+  key down minus     = n,a,$L_minus
+
+  key down q         = n,a,$L_q
+  key down w         = n,a,$L_w
+  key down e         = n,a,$L_e
+  key down r         = n,a,$L_r
+  key down t         = n,a,$L_t
+  key down y         = n,a,$L_y
+  key down u         = n,a,$L_u
+  key down i         = n,a,$L_i
+  key down o         = n,a,$L_o
+  key down p         = n,a,$L_p
+  key down leftbrace        = n,a,$L_leftbrace
+  
+  # row 2
+  key down a         = n,a,$L_a
+  key down s         = s,o,$clear
+  key down d         = e,$clear
+  key down f         = n,a,$L_f
+  key down g         = n,a,$L_g
+  key down h         = n,a,$L_h
+  key down j         = n,a,$L_j
+  key down k         = n,a,$L_k
+  key down l         = n,a,$L_l
+  key down semicolon = n,a,$L_semicolon
+  
+  # row 3
+  key down z         = n,a,$L_z
+  key down x         = n,a,$L_x
+  key down c         = n,a,$L_c
+  key down v         = n,a,$L_v
+  key down b         = n,a,$L_b
+  key down n         = n,a,$L_n
+  key down m         = n,a,$L_m
+  key down comma     = n,a,$L_comma
+  key down dot       = n,a,$L_dot
+  key down slash     = n,a,$L_slash
+}
+
+# [z]のロック時
+lock l5 && l3 && l2 {
+  default up = 
+  key up z           = s,u,$clear
+
+  key down _1        = s,u,$L_1
+  key down _2        = s,u,$L_2
+  key down _3        = s,u,$L_3
+  key down _4        = s,u,$L_4
+  key down _5        = s,u,$L_5
+  key down _6        = s,u,$L_6
+  key down _7        = s,u,$L_7
+  key down _8        = s,u,$L_8
+  key down _9        = s,u,$L_9
+  key down _0        = s,u,$L_0
+  key down minus     = s,u,$L_minus
+
+  key down q         = s,u,$L_q
+  key down w         = s,u,$L_w
+  key down e         = s,u,$L_e
+  key down r         = s,u,$L_r
+  key down t         = s,u,$L_t
+  key down y         = s,u,$L_y
+  key down u         = s,u,$L_u
+  key down i         = h,y,a,$clear
+  key down o         = r,y,a,$clear
+  key down p = s,u,$L_p
+  key down leftbrace = s,u,$L_leftbrace
+  
+  # row 2
+  key down a         = s,u,$L_a
+  key down s         = s,u,$L_s
+  key down d         = s,u,$L_d
+  key down f         = s,u,$L_f
+  key down g         = s,u,$L_g
+  key down h         = s,u,$L_h
+  key down j         = s,u,$L_j
+  key down k         = d,u,$clear
+  key down l         = z,e,$clear
+  key down semicolon         = s,u,$L_semicolon
+  
+  # row 3
+  key down z         = s,u,$L_z
+  key down x         = s,u,$L_x
+  key down c         = s,u,$L_c
+  key down v         = s,u,$L_v
+  key down b         = s,u,$L_b
+  key down n         = s,u,$L_n
+  key down m         = s,u,$L_m
+  key down comma     = s,u,$L_comma
+  key down dot       = s,u,$L_dot
+  key down slash     = s,u,$L_slash
+}
+
+# [x]のロック時
+lock l5 && l3 && l2 && l1 {
+  default up = 
+  key up x           = m,a,$clear
+
+  key down _1        = m,a,$L_1
+  key down _2        = m,a,$L_2
+  key down _3        = m,a,$L_3
+  key down _4        = m,a,$L_4
+  key down _5        = m,a,$L_5
+  key down _6        = m,a,$L_6
+  key down _7        = m,a,$L_7
+  key down _8        = m,a,$L_8
+  key down _9        = m,a,$L_9
+  key down _0        = m,a,$L_0
+  key down minus     = m,a,$L_minus
+
+  key down q         = m,a,$L_q
+  key down w         = m,a,$L_w
+  key down e         = m,a,$L_e
+  key down r         = m,a,$L_r
+  key down t         = m,a,$L_t
+  key down y         = m,a,$L_y
+  key down u         = m,a,$L_u
+  key down i         = slash,$clear
+  key down o         = m,a,$L_o
+  key down p = m,a,$L_p
+  key down leftbrace = m,a,$L_leftbrace
+  
+  # row 2
+  key down a         = m,a,$L_a
+  key down s         = m,a,$L_s
+  key down d         = m,a,$L_d
+  key down f         = m,a,$L_f
+  key down g         = m,a,$L_g
+  key down h         = m,a,$L_h
+  key down j         = m,a,$L_j
+  key down k         = z,o,$clear
+  key down l         = z,a,$clear
+  key down semicolon         = m,a,$L_semicolon
+  
+  # row 3
+  key down z         = m,a,$L_z
+  key down x         = m,a,$L_x
+  key down c         = m,a,$L_c
+  key down v         = m,a,$L_v
+  key down b         = m,a,$L_b
+  key down n         = m,a,$L_n
+  key down m         = m,a,$L_m
+  key down comma     = m,a,$L_comma
+  key down dot       = m,a,$L_dot
+  key down slash     = m,a,$L_slash
+}
+
+# [c]のロック時
+lock l5 && l4 {
+  default up = 
+  key up c           = k,i,$clear
+
+  key down _1        = k,i,$L_1
+  key down _2        = k,i,$L_2
+  key down _3        = k,i,$L_3
+  key down _4        = k,i,$L_4
+  key down _5        = k,i,$L_5
+  key down _6        = k,i,$L_6
+  key down _7        = k,i,$L_7
+  key down _8        = k,i,$L_8
+  key down _9        = k,i,$L_9
+  key down _0        = k,i,$L_0
+  key down minus     = k,i,$L_minus
+
+  key down q         = k,i,$L_q
+  key down w         = k,i,$L_w
+  key down e         = k,i,$L_e
+  key down r         = k,i,$L_r
+  key down t         = k,i,$L_t
+  key down y         = k,i,$L_y
+  key down u         = k,i,$L_u
+  key down i         = s,y,a,$clear
+  key down o         = j,a,$clear
+  key down p = k,i,$L_p
+  key down leftbrace = k,i,$L_leftbrace
+  
+  # row 2
+  key down a         = k,i,$L_a
+  key down s         = k,i,$L_s
+  key down d         = k,i,$L_d
+  key down f         = k,i,$L_f
+  key down g         = k,i,$L_g
+  key down h         = k,i,$L_h
+  key down j         = k,i,$L_j
+  key down k         = b,o,$clear
+  key down l         = g,i,$clear
+  key down semicolon = k,i,$L_semicolon
+  
+  # row 3
+  key down z         = k,i,$L_z
+  key down x         = k,i,$L_x
+  key down c         = k,i,$L_c
+  key down v         = k,i,$L_v
+  key down b         = k,i,$L_b
+  key down n         = k,i,$L_n
+  key down m         = k,i,$L_m
+  key down comma     = k,i,$L_comma
+  key down dot       = k,i,$L_dot
+  key down slash     = k,i,$L_slash
+}
+# [v]のロック時
+lock l5 && l4 && l1 {
+  default up = 
+  key up v           = r,u,$clear
+
+  key down _1        = r,u,$L_1
+  key down _2        = r,u,$L_2
+  key down _3        = r,u,$L_3
+  key down _4        = r,u,$L_4
+  key down _5        = r,u,$L_5
+  key down _6        = r,u,$L_6
+  key down _7        = r,u,$L_7
+  key down _8        = r,u,$L_8
+  key down _9        = r,u,$L_9
+  key down _0        = r,u,$L_0
+  key down minus     = r,u,$L_minus
+
+  key down q         = r,u,$L_q
+  key down w         = r,u,$L_w
+  key down e         = r,u,$L_e
+  key down r         = r,u,$L_r
+  key down t         = r,u,$L_t
+  key down y         = r,u,$L_y
+  key down u         = r,u,$L_u
+  key down i         = k,y,a,$clear
+  key down o         = g,y,a,$clear
+  key down p = r,u,$L_p
+  key down leftbrace = r,u,$L_leftbrace
+  
+  # row 2
+  key down a         = r,u,$L_a
+  key down s         = r,u,$L_s
+  key down d         = r,u,$L_d
+  key down f         = r,u,$L_f
+  key down g         = r,u,$L_g
+  key down h         = r,u,$L_h
+  key down j         = r,u,$L_j
+  key down k         = m,u,$clear
+  key down l         = r,o,$clear
+  key down semicolon         = r,u,$L_semicolon
+  
+  # row 3
+  key down z         = r,u,$L_z
+  key down x         = r,u,$L_x
+  key down c         = r,u,$L_c
+  key down v         = r,u,$L_v
+  key down b         = r,u,$L_b
+  key down n         = r,u,$L_n
+  key down m         = r,u,$L_m
+  key down comma     = r,u,$L_comma
+  key down dot       = r,u,$L_dot
+  key down slash     = r,u,$L_slash
+}
+# [b]のロック時
+lock l5 && l4 && l2 {
+  default up = 
+  key up b           = t,u,$clear
+
+  key down _1        = t,u,$L_1
+  key down _2        = t,u,$L_2
+  key down _3        = t,u,$L_3
+  key down _4        = t,u,$L_4
+  key down _5        = t,u,$L_5
+  key down _6        = t,u,$L_6
+  key down _7        = t,u,$L_7
+  key down _8        = t,u,$L_8
+  key down _9        = t,u,$L_9
+  key down _0        = t,u,$L_0
+  key down minus     = t,u,$L_minus
+
+  key down q         = t,u,$L_q
+  key down w         = t,u,$L_w
+  key down e         = t,u,$L_e
+  key down r         = t,u,$L_r
+  key down t         = t,u,$L_t
+  key down y         = t,u,$L_y
+  key down u         = t,u,$L_u
+  key down i         = t,y,a,$clear
+  key down o         = n,y,a,$clear
+  key down p = t,u,$L_p
+  key down leftbrace = t,u,$L_leftbrace
+  
+  # row 2
+  key down a         = t,u,$L_a
+  key down s         = t,u,$L_s
+  key down d         = t,u,$L_d
+  key down f         = t,u,$L_f
+  key down g         = t,u,$L_g
+  key down h         = t,u,$L_h
+  key down j         = t,u,$L_j
+  key down k         = f,o,$clear
+  key down l         = n,u,$clear
+  key down semicolon         = t,u,$L_semicolon
+  
+  # row 3
+  key down z         = t,u,$L_z
+  key down x         = t,u,$L_x
+  key down c         = t,u,$L_c
+  key down v         = t,u,$L_v
+  key down b         = t,u,$L_b
+  key down n         = t,u,$L_n
+  key down m         = t,u,$L_m
+  key down comma     = t,u,$L_comma
+  key down dot       = t,u,$L_dot
+  key down slash     = t,u,$L_slash
+}
+
+# [n]のロック時
+lock l5 && l4 && l2 && l1 {
+  default up         = 
+  key up n           = t,e,$clear
+
+  key down _1        = t,e,$L_1
+  key down _2        = t,e,$L_2
+  key down _3        = t,e,$L_3
+  key down _4        = t,e,$L_4
+  key down _5        = t,e,$L_5
+  key down _6        = t,e,$L_6
+  key down _7        = t,e,$L_7
+  key down _8        = t,e,$L_8
+  key down _9        = t,e,$L_9
+  key down _0        = t,e,$L_0
+  key down minus     = t,e,$L_minus
+
+  key down q         = t,e,$L_q
+  key down w         = t,e,$L_w
+  key down e         = t,e,$L_e
+  key down r         = t,e,$L_r
+  key down t         = t,e,$L_t
+  key down y         = t,e,$L_y
+  key down u         = t,e,$L_u
+  key down i         = t,e,$L_i
+  key down o         = t,e,$L_o
+  key down p         = t,e,$L_p
+  key down leftbrace        = t,e,$L_leftbrace
+  
+  # row 2
+  key down a         = t,e,$L_a
+  key down s         = w,a,$clear
+  key down d         = s,e,$clear
+  key down f         = t,e,$L_f
+  key down g         = t,e,$L_g
+  key down h         = t,e,$L_h
+  key down j         = t,e,$L_j
+  key down k         = t,e,$L_k
+  key down l         = t,e,$L_l
+  key down semicolon = t,e,$L_semicolon
+  
+  # row 3
+  key down z         = t,e,$L_z
+  key down x         = t,e,$L_x
+  key down c         = t,e,$L_c
+  key down v         = t,e,$L_v
+  key down b         = t,e,$L_b
+  key down n         = t,e,$L_n
+  key down m         = t,e,$L_m
+  key down comma     = t,e,$L_comma
+  key down dot       = t,e,$L_dot
+  key down slash     = t,e,$L_slash
+}
+
+# [m]のロック時
+lock l5 && l4 && l3 {
+  default up         = 
+  key up m           = t,a,$clear
+
+  key down _1        = t,a,$L_1
+  key down _2        = t,a,$L_2
+  key down _3        = t,a,$L_3
+  key down _4        = t,a,$L_4
+  key down _5        = t,a,$L_5
+  key down _6        = t,a,$L_6
+  key down _7        = t,a,$L_7
+  key down _8        = t,a,$L_8
+  key down _9        = t,a,$L_9
+  key down _0        = t,a,$L_0
+  key down minus     = t,a,$L_minus
+
+  key down q         = t,a,$L_q
+  key down w         = t,a,$L_w
+  key down e         = t,a,$L_e
+  key down r         = t,a,$L_r
+  key down t         = t,a,$L_t
+  key down y         = t,a,$L_y
+  key down u         = t,a,$L_u
+  key down i         = t,a,$L_i
+  key down o         = t,a,$L_o
+  key down p         = t,a,$L_p
+  key down leftbrace        = t,a,$L_leftbrace
+  
+  # row 2
+  key down a         = t,a,$L_a
+  key down s         = d,a,$clear
+  key down d         = n,e,$clear
+  key down f         = t,a,$L_f
+  key down g         = t,a,$L_g
+  key down h         = t,a,$L_h
+  key down j         = t,a,$L_j
+  key down k         = t,a,$L_k
+  key down l         = t,a,$L_l
+  key down semicolon = t,a,$L_semicolon
+  
+  # row 3
+  key down z         = t,a,$L_z
+  key down x         = t,a,$L_x
+  key down c         = t,a,$L_c
+  key down v         = t,a,$L_v
+  key down b         = t,a,$L_b
+  key down n         = t,a,$L_n
+  key down m         = t,a,$L_m
+  key down comma     = t,a,$L_comma
+  key down dot       = t,a,$L_dot
+  key down slash     = t,a,$L_slash
+}
+
+# [,]のロック時
+lock l5 && l4 && l3 && l1 {
+  default up         = 
+  key up comma       = d,e,$clear
+
+  key down _1        = d,e,$L_1
+  key down _2        = d,e,$L_2
+  key down _3        = d,e,$L_3
+  key down _4        = d,e,$L_4
+  key down _5        = d,e,$L_5
+  key down _6        = d,e,$L_6
+  key down _7        = d,e,$L_7
+  key down _8        = d,e,$L_8
+  key down _9        = d,e,$L_9
+  key down _0        = d,e,$L_0
+  key down minus     = d,e,$L_minus
+
+  key down q         = d,e,$L_q
+  key down w         = d,e,$L_w
+  key down e         = d,e,$L_e
+  key down r         = d,e,$L_r
+  key down t         = d,e,$L_t
+  key down y         = d,e,$L_y
+  key down u         = d,e,$L_u
+  key down i         = d,e,$L_i
+  key down o         = d,e,$L_o
+  key down p         = d,e,$L_p
+  key down leftbrace        = d,e,$L_leftbrace
+  
+  # row 2
+  key down a         = d,e,$L_a
+  key down s         = p,i,$clear
+  key down d         = b,e,$clear
+  key down f         = d,e,$L_f
+  key down g         = d,e,$L_g
+  key down h         = d,e,$L_h
+  key down j         = d,e,$L_j
+  key down k         = d,e,$L_k
+  key down l         = d,e,$L_l
+  key down semicolon = d,e,$L_semicolon
+  
+  # row 3
+  key down z         = d,e,$L_z
+  key down x         = d,e,$L_x
+  key down c         = d,e,$L_c
+  key down v         = d,e,$L_v
+  key down b         = d,e,$L_b
+  key down n         = d,e,$L_n
+  key down m         = d,e,$L_m
+  key down comma     = d,e,$L_comma
+  key down dot       = d,e,$L_dot
+  key down slash     = d,e,$L_slash
+}
+
+# [.]のロック時
+lock l5 && l4 && l3 && l2 {
+  default up         = 
+  key up dot         = dot,$clear
+
+  key down _1        = dot,$L_1
+  key down _2        = dot,$L_2
+  key down _3        = dot,$L_3
+  key down _4        = dot,$L_4
+  key down _5        = dot,$L_5
+  key down _6        = dot,$L_6
+  key down _7        = dot,$L_7
+  key down _8        = dot,$L_8
+  key down _9        = dot,$L_9
+  key down _0        = dot,$L_0
+  key down minus     = dot,$L_minus
+
+  key down q         = dot,$L_q
+  key down w         = dot,$L_w
+  key down e         = dot,$L_e
+  key down r         = dot,$L_r
+  key down t         = dot,$L_t
+  key down y         = dot,$L_y
+  key down u         = dot,$L_u
+  key down i         = dot,$L_i
+  key down o         = dot,$L_o
+  key down p         = dot,$L_p
+  key down leftbrace        = dot,$L_leftbrace
+  
+  # row 2
+  key down a         = dot,$L_a
+  key down s         = p,o,$clear
+  key down d         = p,u,$clear
+  key down f         = dot,$L_f
+  key down g         = dot,$L_g
+  key down h         = dot,$L_h
+  key down j         = dot,$L_j
+  key down k         = dot,$L_k
+  key down l         = dot,$L_l
+  key down semicolon = dot,$L_semicolon
+  
+  # row 3
+  key down z         = dot,$L_z
+  key down x         = dot,$L_x
+  key down c         = dot,$L_c
+  key down v         = dot,$L_v
+  key down b         = dot,$L_b
+  key down n         = dot,$L_n
+  key down m         = dot,$L_m
+  key down comma     = dot,$L_comma
+  key down dot       = dot,$L_dot
+  key down slash     = dot,$L_slash
+}
+
+# [/]のロック時
+lock l5 && l4 && l3 && l2 && l1 {
+  default up         = 
+  key up slash       = b,u,$clear
+
+  key down _1        = b,u,$L_1
+  key down _2        = b,u,$L_2
+  key down _3        = b,u,$L_3
+  key down _4        = b,u,$L_4
+  key down _5        = b,u,$L_5
+  key down _6        = b,u,$L_6
+  key down _7        = b,u,$L_7
+  key down _8        = b,u,$L_8
+  key down _9        = b,u,$L_9
+  key down _0        = b,u,$L_0
+  key down minus     = b,u,$L_minus
+
+  key down q         = b,u,$L_q
+  key down w         = b,u,$L_w
+  key down e         = b,u,$L_e
+  key down r         = b,u,$L_r
+  key down t         = b,u,$L_t
+  key down y         = b,u,$L_y
+  key down u         = b,u,$L_u
+  key down i         = b,u,$L_i
+  key down o         = b,u,$L_o
+  key down p         = b,u,$L_p
+  key down leftbrace        = b,u,$L_leftbrace
+  
+  # row 2
+  key down a         = b,u,$L_a
+  key down s         = t,y,e,$clear
+  key down d         = v,u,$clear
+  key down f         = b,u,$L_f
+  key down g         = b,u,$L_g
+  key down h         = b,u,$L_h
+  key down j         = b,u,$L_j
+  key down k         = b,u,$L_k
+  key down l         = b,u,$L_l
+  key down semicolon = b,u,$L_semicolon
+  
+  # row 3
+  key down z         = b,u,$L_z
+  key down x         = b,u,$L_x
+  key down c         = b,u,$L_c
+  key down v         = b,u,$L_v
+  key down b         = b,u,$L_b
+  key down n         = b,u,$L_n
+  key down m         = b,u,$L_m
+  key down comma     = b,u,$L_comma
+  key down dot       = b,u,$L_dot
+  key down slash     = b,u,$L_slash
+}
