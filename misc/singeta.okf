@@ -1,5 +1,7 @@
 key up hanguel = hanguel,&enable()
 key up hanja = hanja,&disable()
+key up henkan = henkan,&enable()
+key up muhenkan = muhenkan,&disable()
 
 # 新下駄配列
 deflock l1
@@ -768,7 +770,7 @@ lock l2 {
   key down y         = n,i,$L_y
   key down u         = n,i,$L_u
   key down i         = s,y,u,$clear
-  key down o         = j,u,$clear
+  key down o         = z,y,u,$clear
   key down p = n,i,$L_p
   key down leftbrace = n,i,$L_leftbrace
   
@@ -822,7 +824,7 @@ lock l2 && l1 {
   key down y = h,a,$L_y
   key down u = h,a,$L_u
   key down i = s,y,o,$clear
-  key down o = j,o,$clear
+  key down o = z,y,o,$clear
   key down p = h,a,$L_p
   key down leftbrace = h,a,$L_leftbrace
   
@@ -1139,8 +1141,8 @@ lock l4 && l1 {
   key down minus     = g,a,$L_minus
 
   key down q         = r,y,u,$clear
-  key down w         = j,u,$clear
-  key down e         = j,o,$clear
+  key down w         = z,y,u,$clear
+  key down e         = z,y,o,$clear
   key down r         = g,y,u,$clear
   key down t         = n,y,u,$clear
   key down y         = g,a,$L_y
@@ -1165,7 +1167,7 @@ lock l4 && l1 {
   # row 3
   key down z         = r,y,a,$clear
   key down x         = g,a,$L_x
-  key down c         = j,a,$clear
+  key down c         = z,y,a,$clear
   key down v         = g,y,a,$clear
   key down b         = n,y,a,$clear
   key down n         = g,a,$L_n
@@ -1956,7 +1958,7 @@ lock l5 && l4 {
   key down y         = k,i,$L_y
   key down u         = k,i,$L_u
   key down i         = s,y,a,$clear
-  key down o         = j,a,$clear
+  key down o         = z,y,a,$clear
   key down p = k,i,$L_p
   key down leftbrace = k,i,$L_leftbrace
   
