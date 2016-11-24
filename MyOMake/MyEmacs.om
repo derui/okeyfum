@@ -1,0 +1,31 @@
+open build/Common
+open configure/Configure
+
+.STATIC:
+    EMACS_EXISTS = $(CheckProg emacs)
+
+public.EMACS = $`(if $(EMACS_EXISTS), emacs)
+
+public.LOAD_PATH[] = 
+public.LAZY_LOAD_PATH = $`(if $(gt $(length $(LOAD_PATH)), 0), \
+	$(mapprefix -L, $(LOAD_PATH)), $(EMPTY))
+
+public.EMACS_FLAGS =
+public.LAZY_EMACS_FLAGS = $`(EMACS_FLAGS)
+
+public.Emacs = $(EMACS) $(LAZY_LOAD_PATH) $(LAZY_EMACS_FLAGS)
+
+%.elc : %.el
+	section rule
+		if $(not $(EMACS_EXISTS))
+			err. =
+				extends $(UnbuildableException)
+				message = $(string "Need emacs to byte compile %.el to %.elc")
+				target = $(file %.elc)
+
+			eprintln(Need emacs to byte compile *.el to *.elc)
+			exit 1
+		else
+			%.elc : %.el
+				$(EMACS)  $(LAZY_EMACS_FLAGS) -Q $(LAZY_LOAD_PATH) --batch -l bytecomp \
+					--eval '(batch-byte-compile-file "$<")'

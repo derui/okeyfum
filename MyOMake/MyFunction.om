@@ -1,0 +1,46 @@
+
+.PHONY: all install uninstall clean
+
+BIG_ROOT=$(dir .)
+
+# To enable the installation mark files, you must define INSTALLED path
+# variable for the mark file directory like INSTALLED=$(BIG_ROOT)/installed and
+# make sure the directory $(INSTALLED) exists. This preparation must be done outside
+# this file.
+Installed(packs) =
+	if $(defined INSTALLED)
+		return $(addprefix $(INSTALLED)/, $(packs))
+	else
+		return $(array)
+
+# Create $(Installed $(packed)) file from the digest of $(targets)
+CreateInstalled(pack, targets)=
+	if $(defined INSTALLED)
+		println(dump md5 $(INSTALLED)/$(pack))
+		CreateCheckSum($(INSTALLED)/$(pack), $(targets))
+
+RequireFiles(files) =
+    .SCANNER: scan-%: $(files)
+    % : $(files)
+    export
+
+CreateCheckSum(pack, targets) =
+    chan = $(fopen $(pack), w)
+    fprintln($(chan), $(string $(targets)))
+    fprintln($(chan), $(string $(digest $(targets))))
+    close($(chan))
+
+# Install clean command which cleans all the target files exists under
+# the directory. Use with care.
+AutoClean() =
+	.PHONY: clean
+	clean:
+		rm -f $(filter-proper-targets $(ls R, .))
+	export
+
+RequireBuild(targets) =
+    dependencies.md5: $(targets)
+        println($(string $(sequence-sort $(compare), $(dependencies-all $(targets)))))
+        CreateCheckSum($@, $(sequence-sort $(compare), $(dependencies-all $(targets))))
+    RequireFiles(dependencies.md5)
+    export
