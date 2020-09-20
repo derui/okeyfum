@@ -1,0 +1,4 @@
+(executable
+ (name main)
+ (public_name okeyfum)
+ (libraries ctypes ctypes.foreign okeyfum.c str okeyfum.lib logs))

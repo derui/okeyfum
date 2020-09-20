@@ -1,0 +1,3 @@
+(executable
+ (name okeyfum_test)
+ (libraries alcotest okeyfum))

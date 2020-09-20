@@ -1,0 +1,35 @@
+(library
+ (name okeyfum_c_type_description)
+ (modules Okeyfum_c_type_description)
+ (public_name okeyfum.c_type_description)
+ (libraries ctypes))
+
+(executable
+ (name generate_types)
+ (modules Generate_types)
+ (libraries ctypes ctypes.foreign ctypes.stubs okeyfum.c_type_description))
+
+
+(rule
+ (targets ffi_ml_types_stubgen.c)
+ (action
+  (with-stdout-to %{targets}
+    (run ./generate_types.exe))))
+
+(rule
+ (targets ffi_ml_types_stubgen.exe)
+ (deps ffi_ml_types_stubgen.c)
+ (action (run %{cc} -o %{targets} %{deps} -I %{lib:ctypes:.} -I %{ocaml_where})))
+
+(rule
+ (targets okeyfum_c_generated_types.ml)
+ (deps ffi_ml_types_stubgen.exe)
+ (action (with-stdout-to %{targets}
+           (run %{deps}))))
+
+(library
+ (name okeyfum_c)
+ (public_name okeyfum.c)
+ (modules Okeyfum_c_generated_types)
+ (flags (:standard -w -27-9))
+ (libraries ctypes ctypes.foreign okeyfum.c_type_description))

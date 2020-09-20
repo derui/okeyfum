@@ -1,0 +1,9 @@
+(menhir
+ (modules okeyfum_config_parser))
+(ocamllex
+ (modules okeyfum_config_lexer))
+
+(library
+ (name okeyfum)
+ (public_name okeyfum.lib)
+ (libraries ctypes ctypes.foreign okeyfum.c str))
