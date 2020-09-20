@@ -1,5 +1,4 @@
 %{
- exception SyntaxError of string
  module Config_type = Okeyfum_config_type
 %}
 

@@ -1,5 +1,4 @@
-
-module T = Okeyfum_ffi_bindings.Types(Okeyfum_ffi_generated_types)
+module T = Okeyfum_c_type_description.Types (Okeyfum_c.Okeyfum_c_generated_types)
 
 (* Fixed keycode map. This map is specially defined in user environment *)
 let key_name_map =
@@ -151,10 +150,12 @@ let key_code_map =
 
 let key_name_to_code name =
   try
-    let code = Hashtbl.find key_name_map name in Some(code)
+    let code = Hashtbl.find key_name_map name in
+    Some code
   with Not_found -> None
 
 let key_code_to_name code =
   try
-    let name = Hashtbl.find key_code_map code in Some(name)
+    let name = Hashtbl.find key_code_map code in
+    Some name
   with Not_found -> None
