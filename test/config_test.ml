@@ -6,7 +6,7 @@ let tests =
       `Quick,
       fun () ->
         let conf = Okeyfum_config.load "./config.okf" in
-        Alcotest.(check @@ option @@ of_pp Fmt.nop) "loading" (Some Okeyfum.Okeyfum_config.Config.empty) conf );
+        Alcotest.(check @@ bool) "loading" true (Option.is_some conf) );
     ( "OKeyfum can build configuration from a file",
       `Quick,
       fun () ->
