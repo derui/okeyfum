@@ -13,7 +13,7 @@ let load_config file =
   let file = match String.trim file with "" -> default_config | _ -> file in
 
   if not (Sys.file_exists file) then (
-    Log.info (Printf.sprintf "Don't load configuration %s, so use empty configuratino " file);
+    Log.info (Printf.sprintf "Don't load configuration %s, so use empty configuration " file);
     Some C.Config.empty )
   else C.load file
 
@@ -30,20 +30,23 @@ let () =
     ]
   in
 
-  Arg.parse_argv Sys.argv spec_list (fun x -> device := x) usage;
+  try
+    Arg.parse_argv Sys.argv spec_list (fun x -> device := x) usage;
+    if !debug_mode then Log.set_log_level Log.DEBUG else ();
 
-  if !debug_mode then Log.set_log_level Log.DEBUG else ();
+    Log.info "Launch Okeyfum";
+    Log.debug (Printf.sprintf "Given device name : %s" !device);
 
-  Log.info "Launch Okeyfum";
-  Log.debug (Printf.sprintf "Given device name : %s" !device);
-
-  ( match load_config !config with
-  | None        -> Log.error (Printf.sprintf "Not found specified config file: %s" !config)
-  | Some config ->
-      if !device = "" then (
-        Log.error "Not specitied keyboard device";
-        exit 2 )
-      else
-        let module H = Okeyfum_handler in
-        Keyboard_device.open_with ~grab:!grab ~dev:!device ~f:(H.handle_key_event config) () );
-  Log.info "Finish termination Okeyfum"
+    ( match load_config !config with
+    | None        -> Log.error (Printf.sprintf "Not found specified config file: %s" !config)
+    | Some config ->
+        if !device = "" then (
+          Log.error "Not specitied keyboard device";
+          exit 2 )
+        else
+          let module H = Okeyfum_handler in
+          Keyboard_device.open_with ~grab:!grab ~dev:!device ~f:(H.handle_key_event config) () );
+    Log.info "Finish termination Okeyfum"
+  with Arg.Help v ->
+    Printf.eprintf "%s" v;
+    exit 1
